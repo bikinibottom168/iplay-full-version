@@ -137,7 +137,7 @@ class AdminMovieController extends Controller
         }
         else
         {
-            $data->score = $request->score
+            $data->score = $request->score;
         }
         $data->score;
         // $data->type = $request->type;

@@ -157,7 +157,7 @@ class AdminBannerController extends Controller
         $data->position = $request->position;
         $data->show_ads = $request->show_ads;
         $data->type = $request->type;
-
+        
         if (env('BANNER_BUTTON', '0') == "1") {
             $button = json_encode($request->button_ads);
             $data->button = $button;

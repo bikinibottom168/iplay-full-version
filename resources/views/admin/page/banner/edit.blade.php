@@ -75,7 +75,6 @@
                                                         <option value="m1" {{ $request->layout_ads == 'm1' ? 'selected' : '' }}>M1 เฉพาะหน้าดูหนัง - ด้านบนตัวเล่นหนัง (แนะนำ 728x90)</option>
                                                         <option value="m2" {{ $request->layout_ads == 'm2' ? 'selected' : '' }}>M2 เฉพาะหน้าดูหนัง - ด้านล่างตัวเล่นหนัง (แนะนำ 728x90)</option>
                                                         <option value="video" {{ $request->layout_ads == 'video' ? 'selected' : '' }}>VIDEO - ตัวเล่นหนัง</option>
-                                                        <option value="vast" {{ $request->layout_ads == 'vast' ? 'selected' : '' }}>VIDEO - คั่นโฆษณา </option>
                                                         <option value="overlay" {{ $request->layout_ads == 'overlay' ? 'selected' : '' }}>Overlay ป้ายแสดงใน Player</option>
                                                         <option value="code" {{ $request->layout_ads == 'code' ? 'selected' : '' }}>Code</option>
                                                     </select>
