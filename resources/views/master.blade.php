@@ -65,7 +65,7 @@
     
 </head>
 
-<body style="background-color: {{ env("SCRIPT_BACKGROUND_COLOR") }}">
+<body style="background-color: {{ env("SCRIPT_BACKGROUND_COLOR", "#000") }}">
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: {{ env('SCRIPT_PRIMARY_COLOR', '') }};">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
@@ -106,10 +106,14 @@
     @include('template.ads.ads-float-left')
     @include('template.ads.ads-float-center')
     @include('template.ads.ads-float-right')
-    
+
+    <div class="container border-radius-1 mt-4">
+        <div class="row ">
+            @include('template.ads.ads-top')
+        </div>
+    </div>
     <div class="container bg-white border-radius-1 mt-4">
         <div class="row pt-4 px-2">
-            @include('template.ads.ads-top')
             @yield('content-top')
             <div class="col-lg-15 col-md-13 col-sm-12 col-20 my-4">
                 @yield('content')

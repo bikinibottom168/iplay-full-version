@@ -251,7 +251,7 @@ class MovieController extends Controller
 
     $data['playlist'] = Playlist::orderBy('title', 'ASC')->get();
 
-    $data['movie_hot'] = movie::orderBy('view', 'DESC')->limit(16)->get();
+    $data['movie_hot'] = movie::inRandomOrder()->limit(16)->get();
 
     $data['menu_category'] = menu::where('abouts.type', '1')
       ->join('genres', 'abouts.description', '=', 'genres.id')
@@ -409,7 +409,7 @@ class MovieController extends Controller
 
     $data['movie'] = movie::orderBy('updated_at', 'desc')
       ->select('id', 'title', 'slug_title', 'sound', 'image', 'imdb', 'resolution', 'type', 'movie_hot', 'score', 'updated_at')
-      ->paginate(20)
+      ->paginate(36)
       ->onEachSide(1);
 
 
@@ -485,7 +485,7 @@ class MovieController extends Controller
     $data['letter_list'] = movie::where('title', 'like', $request->letters . "%")
       ->orderBy('view', 'desc')
       ->select('id', 'title', 'slug_title', 'sound', 'image', 'imdb', 'resolution', 'type', 'movie_hot', 'score')
-      ->paginate(20)
+      ->paginate(36)
       ->onEachSide(1);
 
 
@@ -508,7 +508,7 @@ class MovieController extends Controller
 
     $data['letter_list'] = movie::orderBy('view', 'desc')
       ->select('id', 'title', 'slug_title', 'sound', 'image', 'imdb', 'resolution', 'type', 'movie_hot', 'score')
-      ->paginate(20)
+      ->paginate(36)
       ->onEachSide(1);
 
 
@@ -731,13 +731,25 @@ class MovieController extends Controller
     $data['mode'] = "movie";
     $data['movie'] = movie::orderBy('new_movie', '1')
       ->orderBy('updated_at', 'desc')
-      ->paginate(20);
+      ->paginate(36);
     $data['title_category'] = 'หนังทั้งหมด';
     $data['title'] = "หนังทั้งหมด " . $data['setting']->title;
     $data['keywords'] = $data['setting']->title;
     $data['description'] = $data['setting']->description;
 
     $data['random_movie'] = movie::orderByRaw("RAND()")->limit(4)->get(); // สุ่มหนัง
+    return view('movie.category', $data);
+  }
+
+  public function year($year)
+  {
+    $data = $this->Main(); // Main มาใช้
+
+    $data['movie'] = movie::where('year',$year)->paginate(36);
+    $data['category_select'] = "ปี $year";
+    $data['title_category_eng'] = "ปี $year";
+
+
     return view('movie.category', $data);
   }
 
@@ -762,7 +774,7 @@ class MovieController extends Controller
     $data['movie'] = categoryMovies::where('categorys_movies.category_id', $data['category_select']->id)
       ->join('movies', 'categorys_movies.movie_id', '=', 'movies.id')
       ->orderBy('movies.created_at', 'desc')
-      ->paginate(20);
+      ->paginate(36);
 
 
     return view('movie.category', $data);
@@ -786,11 +798,11 @@ class MovieController extends Controller
     // $data['movie'] = categoryMovies::where('categorys_movies.category_id', $data['get_playlist']->id)
     //     ->join('movies','categorys_movies.movie_id', '=','movies.id')
     //     ->orderBy('movies.created_at','desc')
-    //     ->paginate(20);
+    //     ->paginate(36);
     $playlist = (array) json_decode($data['get_playlist']->playlist);
 
     $data['movie'] = movie::whereIn('id', $playlist)
-      ->paginate(20);
+      ->paginate(36);
 
 
     return view('movie.playlist', $data);
@@ -821,7 +833,7 @@ class MovieController extends Controller
 
     $data['movie'] = movie::where('title', 'like', '%' . $request->title . '%')
       ->orderBy('updated_at', 'desc')
-      ->paginate(20);
+      ->paginate(36);
 
     return view('movie.search', $data);
   }

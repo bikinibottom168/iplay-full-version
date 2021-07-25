@@ -4,6 +4,7 @@
 /public/images/movie/*.jpg
 /public/images/movie/*.gif
 /public/images/movie/*.png
+/public/images/series/*.png
 /public/images/playlist/*.jpg
 /public/images/playlist/*.png
 /public/images/playlist/*.gif

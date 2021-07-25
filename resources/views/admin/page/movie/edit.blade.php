@@ -92,6 +92,11 @@
                                                     <label>IMDB</label>
                                                     <input type="text" name="imdb" placeholder="เช่น tt1825683" class="form-control form-control-line" value="{{ $movie->imdb }}">
                                                 </div>
+                                            @else
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>คะแนน IMDB</label>
+                                                    <input type="text" name="score" placeholder="คะแนน" class="form-control form-control-line" value="{{ $movie->score }}">
+                                                </div>
                                             @endif
                                             <div class="col-md-1 col-sm-6">
                                                 <label>ปี</label>

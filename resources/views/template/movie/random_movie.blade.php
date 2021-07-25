@@ -1,5 +1,6 @@
-<div class="col-lg-20 col-20">
-    <div class="owl-carousel">
+<div class="col-lg-20 col-20 mt-4">
+    <p>หนังเรื่องอื่นๆ</p>
+    <div class="owl-carousel" id="owl-carousel-movie">
         @foreach ($movie_hot as $key)
             <div class="list-slide">
                 <a href="{{ route('movie', ['title' => $key->slug_title]) }}">
@@ -75,10 +76,10 @@
         </style>
         <script>
             $(document).ready(function(){
-                $(".owl-carousel").owlCarousel({
+                $("#owl-carousel-movie").owlCarousel({
                     loop:true,
                     autoplay: true,
-                    autoplayTimeout: 2000,
+                    autoplayTimeout: 10000,
                     margin:15,
                     responsive: {
                         480: {
@@ -88,7 +89,7 @@
                             items: 6
                         },
                         1280: {
-                            items: 8
+                            items: 6
                         }
     
                     }

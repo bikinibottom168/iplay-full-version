@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-        @include('template.content-main', ['title' => $category_select->title_category_eng." ".$category_select->title_category])
+        @include('template.content-main', ['title' => (!empty($category_select->title_category_eng) ? $category_select->title_category_eng : $title_category_eng)." ".(!empty($category_select->title_category) ? $category_select->title_category : '')])
 @endsection
 
 @section('content-right')

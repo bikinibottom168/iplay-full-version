@@ -131,7 +131,14 @@ class AdminMovieController extends Controller
         $data->sound = $request->sound;
         // $data->runtime = '0';
         // $data->new_movie = $request->new_movie;
-        $data->imdb = $request->imdb;
+        if($setting->imdb == "1")
+        {
+            $data->imdb = $request->imdb;
+        }
+        else
+        {
+            $data->score = $request->score
+        }
         $data->score;
         // $data->type = $request->type;
         // $data->onair = $request->onair;

@@ -3,7 +3,7 @@
         <h1 class="title-header text-dark">{{ $title }}</h1>
     </div>
     @forelse($movie as $k)
-    <div class="col-lg-4 col-md-5 col-10 my-3">
+    <div class="col-lg-6 col-md-6 col-10 my-3 centered">
         <a href="{{ route('movie', ['title' => $k->slug_title]) }}" class="item-movie">
             <div class="slide-button-play">
                 <i class="far fa-play-circle" style="color: #FFBB00"></i>

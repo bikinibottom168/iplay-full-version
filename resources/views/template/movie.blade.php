@@ -64,6 +64,12 @@
         @include('template.movie.player')
         {{-- Ads On Bottom Movie --}}
         @include('template.movie.ads_on_movie_bottom')
+
+        <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/th_TH/sdk.js#xfbml=1&version=v11.0&appId=191119298119968&autoLogAppEvents=1" nonce="L89Z3QQR"></script>
+<div class="fb-comments" data-href="{{ Request::url() }}" data-width="100%" data-numposts="5"></div>
+
+        @include('template.movie.random_movie')
     </div>
 </div>
 

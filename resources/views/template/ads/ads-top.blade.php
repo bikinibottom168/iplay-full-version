@@ -5,7 +5,7 @@ if(env('SCRIPT_ADS_TOP_LEFT_RIGHT', '0') == "1")
 }
 else
 {
-    $col = "col-lg-20 col-md-20 col-20 mb-1";
+    $col = "col-lg-10 col-md-10 col-10 mb-1";
 }
 
 @endphp

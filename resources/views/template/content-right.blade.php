@@ -67,6 +67,24 @@
             </div>
         @endif
     @endif
+    <div class="col-lg-20 col-20 mt-4">
+        <div class="widget" style="background-color: #f2f4f5">
+            <div class="widget-title text-dark">
+                <p><span>ปีหนัง</span></p>
+            </div>
+            <hr>
+            <ul class="categorys" style="overflow: auto; max-height: 300px; padding-right: 5px">
+                @php $years = (int)date('Y'); @endphp
+                    @for($i = $years; $i >= 1948; $i--)
+                    <li class="category-item border-radius-2 text-dark" style="display: inline-block;width:45%;text-align: center">
+                        <a class="text-dark d-block" href="{{ route('year',['year' => $i]) }}" >
+                            {{ $i }}
+                        </a>
+                    </li>
+                @endfor
+		    </ul>
+        </div>
+    </div>
 </div>
 <style>
     .category-item a {
