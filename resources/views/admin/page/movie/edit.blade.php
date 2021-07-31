@@ -97,6 +97,10 @@
                                                     <label>คะแนน IMDB</label>
                                                     <input type="text" name="score" placeholder="คะแนน" class="form-control form-control-line" value="{{ $movie->score }}">
                                                 </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Runtime</label>
+                                                    <input type="text" name="runtime" placeholder="120" class="form-control form-control-line" value="{{ $movie->runtime }}">
+                                                </div>
                                             @endif
                                             <div class="col-md-1 col-sm-6">
                                                 <label>ปี</label>
@@ -132,12 +136,12 @@
                                         <div class="row">
                                             @php
                                                 $count_selected = count($selected);
-                                                $total_select = 3-$count_selected;
+                                                $total_select = 6-$count_selected;
                                             @endphp
                                             @for($i = 0; $i< $count_selected ;$i++)
                                                 <div class="col-sm-4">
                                                     <label>ประเภท</label>
-                                                    <select class="form-control form-control-line" name="category{{ $i+1 }}">
+                                                    <select class="form-control form-control-line" name="category[{{ $i+1 }}]">
                                                         <option value="0">เลือก..</option>
                                                         @foreach ($category as $kk)
                                                             <option value="{{ $kk->id }}" {{ $kk->id == $selected[$i]->category_id ? 'selected' : '' }}>{{ $kk->title_category_eng }} {{ $kk->title_category }}</option>
@@ -148,7 +152,7 @@
                                             @for($i = 0; $i< $total_select; $i++)
                                                 <div class="col-sm-4">
                                                     <label>ประเภท</label>
-                                                    <select class="form-control form-control-line" name="category{{ $count_selected+$i+1 }}">
+                                                    <select class="form-control form-control-line" name="category[{{ $count_selected+$i+1 }}]">
                                                         <option value="0">เลือก..</option>
                                                         @foreach ($category as $kk)
                                                             <option value="{{ $kk->id }}">{{ $kk->title_category_eng }} {{ $kk->title_category }}</option>
@@ -320,11 +324,6 @@
                                                 <input type="text" class="form-control" name="youtube" placeholder="youtube ตัวอย่างหนัง" value="https://youtu.be/{{ $movie->youtube }}">
                                             </div>
                                       </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="{{ asset($movie->image_poster) }}" width="60px"><br>
-                                        <label for="image_poster">ภาพหน้าปกหนัง</label>
-                                        <input type="file" class="form-control-file" name="file_poster" id="image_poster">
                                     </div>
                                     <div class="form-group">
                                         <img src="{{ asset($movie->image) }}" width="60px"><br>

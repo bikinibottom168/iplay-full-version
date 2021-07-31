@@ -49,190 +49,6 @@ class MovieController extends Controller
   public $i = 0;
   public $k = 0;
 
-  public function avGet()
-  {
-    return view('avGet');
-  }
-
-  public function avPost(Request $request)
-  {
-    $urls = explode("\r\n", $request->url);
-
-    foreach ($urls as $url) {
-      // Reset Data
-      $this->i = 0;
-      $this->k = 0;
-      $this->data = null;
-
-      $client = new Client();
-      $crawler = $client->request('GET', $url);
-      // ชื่อเรื่อง
-      $crawler->filter('h1')->each(function ($node) {
-        $this->data['title'] = trim($node->text());
-      });
-
-      // คะแนน
-      $crawler->filter('.dt_rating_vgs')->each(function ($node) {
-        $this->data['score'] = $node->text();
-      });
-
-
-      // $crawler->filter('.tab-pane.fade')->each(function ($node) {
-      //     $this->data['description'] = $node->text();
-      // });
-
-      // หมวดหมู่
-      $crawler->filter('.sgeneros a')->each(function ($node) {
-        $this->data['category'][$this->i] = trim($node->text());
-        $this->i++;
-      });
-
-
-      // // จำนวนตอน
-      $crawler->filter('ul.episodios > li > a')->each(function ($node) {
-        $this->data['detail'][$this->k] = $node->text();
-        $this->k++;
-      });
-
-
-      // รูปภาพ
-      $crawler->filter('.poster > img')->each(function ($node) {
-        $this->data['image'] = $node->attr('data-wpfc-original-src');
-      });
-
-      // PATH IMAGE
-      $path = 'images/series/';
-      if (env('APP_ENV') == 'production') {
-        $path = 'images/series/';
-      } else if (env('APP_ENV') == 'local') {
-        $path = public_path('images/series/');
-      }
-      $type_image = "";
-      if (strrpos($this->data['image'], ".jpg") > 1) {
-        $type_image = "jpg";
-      } else if (strrpos($this->data['image'], ".png") > 1) {
-        $type_image = "png";
-      } else if (strrpos($this->data['image'], ".gif") > 1) {
-        $type_image = "gif";
-      }
-      $fileName = str_random(11) . str_random(20) . "." . $type_image;
-      $part = $this->data['image'];
-      $file = file_get_contents($part);
-      $save = file_put_contents($path . $fileName, $file);
-
-
-      // Title
-      $title = explode(" ", $this->data['title']);
-      $title = implode("-", $title);
-      $title = explode("(", $title);
-      $title = implode("", $title);
-      $title = explode(")", $title);
-      $title = implode("", $title);
-      $title = explode(".", $title);
-      $title = implode("", $title);
-      $title = explode("(", $title);
-      $title = implode("", $title);
-      $title = explode(")", $title);
-      $title = implode("", $title);
-      $title = explode(".", $title);
-      $title = implode("", $title);
-      $title = explode("?", $title);
-      $title = implode("", $title);
-      $title = explode(":", $title);
-      $title = implode("", $title);
-      $title = explode("|", $title);
-      $title = implode("", $title);
-      $title = explode(";", $title);
-      $title = implode("", $title);
-      $title = explode("*", $title);
-      $title = implode("", $title);
-      $title = explode("+", $title);
-      $title = implode("", $title);
-      $title = explode("/", $title);
-      $title = implode("", $title);
-
-
-      // จำนวนตอน
-      // $episode_tmp = explode(" ", $this->data['detail'][0]);
-      // $episode_tmp = explode("-", $episode_tmp[1]);
-      $episode = array();
-      // for($i = $episode_tmp[0]; $i <= $episode_tmp[1]; $i++)
-      // {
-      //     $episode["EP ".$i] = "series-korea/".strtolower($title)."/".strtolower($title)."-ep-".$i.".mp4";
-      // }
-      if (isset($this->data['detail'])) {
-        for ($i = 1; $i <= count($this->data['detail']); $i++) {
-          $episode["EP " . $i] = "series-korea/" . strtolower($title) . "/" . strtolower($title) . "-ep-" . $i . ".mp4";
-        }
-      }
-
-
-
-      $movie = new movie();
-      $movie->title = $this->data['title'];
-      // $movie->subtitle = $this->data['subtitle'];
-      $movie->slug_title = $title;
-      $movie->type = 'series';
-      $movie->score = rand(80, 99);
-      $movie->description = "";
-      // $movie->actors = $this->data['actor'];;
-      $movie->year = '';
-      $movie->resolution = 'HD';
-      $movie->sound = 'ST';
-      // $movie->runtime = $this->data['runtime'];
-      $movie->image = 'images/series/' . $fileName;
-      $movie->file_series = json_encode($episode);
-
-      $movie->save();
-
-      // Category Update
-      if (isset($this->data['category'])) {
-        for ($i = 0; $i < count($this->data['category']); $i++) {
-
-          $category_id = "0";
-
-          if ($this->data['category'][$i] == "Action & Adventure") {
-            $category_id = "43";
-          } else if ($this->data['category'][$i] == "Action & Adventure") {
-            $category_id = "49";
-          } else if ($this->data['category'][$i] == "Comedy") {
-            $category_id = "44";
-          } else if ($this->data['category'][$i] == "Crime") {
-            $category_id = "45";
-          } else if ($this->data['category'][$i] == "Drama") {
-            $category_id = "46";
-          } else if ($this->data['category'][$i] == "Family") {
-            $category_id = "73";
-          } else if ($this->data['category'][$i] == "Sci-Fi & Fantasy") {
-            $category_id = "48";
-          } else if ($this->data['category'][$i] == "Mystery") {
-            $category_id = "76";
-          } else if ($this->data['category'][$i] == "War & Politics") {
-            $category_id = "71";
-          } else if ($this->data['category'][$i] == "Sci-Fi & Fantasy") {
-            $category_id = "74";
-          } else if ($this->data['category'][$i] == "Reality") {
-            $category_id = "77";
-          }
-
-          if ($category_id != "0") {
-            // Check Exist
-            // $check_exist = categoryMovies::where([['movie_id' => $movie->id], ['category_id' => $category_id]])->firstOrFail();
-            // if(!$check_exist)
-            // {
-            $data_cate = new categoryMovies;
-            $data_cate->category_id = $category_id;
-            $data_cate->movie_id = $movie->id;
-            $data_cate->save();
-            // }
-          }
-        }
-      }
-
-
-      echo "<a href='" . route('movie', ['title' => $movie->slug_title]) . "' target='_blank'>" . $this->data['title'] . "</a><br>";
-    }
-  }
 
   public function Main()
   {
@@ -393,9 +209,9 @@ class MovieController extends Controller
   public function index(Request $request)
   {
 
-    if (!Schema::hasTable('movies')) {
-      return redirect()->route('install');
-    }
+    // if (!Schema::hasTable('user')) {
+    //   return redirect()->route('install');
+    // }
 
     $data = $this->Main(); // Main มาใช้
 
@@ -667,10 +483,13 @@ class MovieController extends Controller
 
     $data['genre'] = categoryMovies::where('categorys_movies.movie_id', $data['movie']->id)
       ->join('genres', 'genres.id', '=', 'categorys_movies.category_id')
-      ->orderBy('genres.title_category_eng', 'asc')->first(); // ค้นหาหมวดหมู่แรกของหนัง
+      ->orderBy('genres.title_category_eng', 'asc')->get(); // ค้นหาหมวดหมู่แรกของหนัง
+
+    // dd($data['genre']);
     $data['genre_count'] = categoryMovies::where('categorys_movies.movie_id', $data['movie']->id)
       ->join('genres', 'genres.id', '=', 'categorys_movies.category_id')
       ->orderBy('genres.title_category_eng', 'asc')->count();
+
 
     // โฆษณา
     $data['ads_movie_top'] = ads::where([

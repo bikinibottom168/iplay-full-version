@@ -15,6 +15,9 @@
             <div class="resolution resolution-{{ strtolower($k->resolution) }} text-white p-2">
                 {{ $k->resolution }}
             </div>
+            <div class="sound-label text-white p-2">
+                {{ $k->sound == "ST" ? "ซาวด์แทรค" : ($k->sound == "TH" || "Thai" ? "เสียงไทย" : ($k->sound == "TS" || $k->sound == "SoundTrack(T)+Thai" ? "ซาวด์แทรค": $k->sound)) }}
+            </div>
             @endif
             <img src="{{ asset($k->image) }}" alt="{{ $k->title }}" class="item-poster img-fluid">
             <h3 class="title-poster text-dark mt-2">{{ $k->title }}</h3>
@@ -37,6 +40,20 @@
         font-weight: bold;
         transition: 0.5s;
     }
+    .sound-label {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        position: absolute;
+        text-align:center;
+        font-size: 0.75rem;
+        font-weight: bold;
+        transition: 0.5s;
+        top: 10px;
+        right:20px;
+        background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    }
     .resolution {
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -48,13 +65,13 @@
         top: 30px;
     }
     .resolution-hd {
-        background-color: #ff7c3e;
+        background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
     }
     .resolution-fullhd {
-        background-color: #00a400;
+        background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
     }
     .resolution-zoom {
-        background-color: #d20000;
+        background-image: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%);
     }
     .item-movie:hover .item-poster{
         opacity: 0.7;
@@ -62,6 +79,8 @@
     .item-poster {
         opacity: 1;
         transition: 0.5s;
+        width: 100%;
+        height: 350px;
     }
 
     .slide-button-play {
@@ -106,5 +125,15 @@
         margin-right: .5rem;
         margin-bottom: 0;
         font-size: 1.875rem;
+    }
+
+    @media screen and (max-width: 480px)
+    {
+        .item-poster {
+            opacity: 1;
+            transition: 0.5s;
+            width: 100%;
+            height: 200px;
+        }
     }
 </style>

@@ -117,6 +117,15 @@
                                                     <label>IMDB</label>
                                                     <input type="text" name="imdb" placeholder="เช่น tt1825683" class="form-control form-control-line">
                                                 </div>
+                                            @else
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>คะแนน IMDB</label>
+                                                    <input type="text" name="score" placeholder="คะแนน" class="form-control form-control-line" >
+                                                </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Runtime</label>
+                                                    <input type="text" name="runtime" placeholder="120" class="form-control form-control-line" >
+                                                </div>
                                             @endif
                                             <div class="col-md-1 col-sm-6">
                                                 <label>ปี</label>
@@ -149,10 +158,10 @@
                                     </div>
                                     <div class="form-group">
                                             <div class="row">
-                                                @for($i = 0; $i< 3 ;$i++)
+                                                @for($i = 0; $i< 6 ;$i++)
                                                     <div class="col-sm-4">
                                                         <label>หมวดหมู่</label>
-                                                        <select class="form-control form-control-line" name="category{{ $i+1 }}">
+                                                        <select class="form-control form-control-line" name="category[{{ $i+1 }}]">
                                                             <option value="0">เลือก..</option>
                                                             @foreach ($category as $kk)
                                                                 <option value="{{ $kk->id }}">{{ $kk->title_category_eng }} {{ $kk->title_category }}</option>
@@ -281,10 +290,10 @@
                                                   </div>
                                             </div>
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="image_poster">ภาพหน้าปกหนัง</label>
                                         <input type="file" class="form-control-file" name="file_poster" id="image_poster">
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="exampleFormControlFile1">รูปภาพ</label>
                                         <input type="file" class="form-control-file" name="file" id="exampleFormControlFile1">

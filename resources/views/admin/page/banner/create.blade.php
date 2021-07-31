@@ -71,7 +71,6 @@
                                     <option value="video">VIDEO - ตัวเล่นหนัง </option>
                                     <option value="overlay">Overlay ป้ายแสดงใน Player</option>
                                     <option value="code" >Code</option>
-                                    {{-- <option value="vast">VIDEO - คั่นโฆษณา </option> --}}
                                 </select>
                             </div>
                             <div class="col-md-3 col-sm-12">

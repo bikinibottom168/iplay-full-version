@@ -126,7 +126,7 @@ class AdminMovieController extends Controller
         $data->year = $request->year;
         $data->type = $request->list_check;
         $data->resolution = $request->resolution;
-        $data->movie_hot = $request->movie_hot;
+        $data->movie_hot = isset($request->movie_hot) ? $request->movie_hot : 0  ;
         // $data->vip = '0';
         $data->sound = $request->sound;
         // $data->runtime = '0';
@@ -138,8 +138,9 @@ class AdminMovieController extends Controller
         else
         {
             $data->score = $request->score;
+            $data->runtime = $request->runtime;
         }
-        $data->score;
+
         // $data->type = $request->type;
         // $data->onair = $request->onair;
         $data->image = '/image/not_found.jpg';
@@ -284,42 +285,41 @@ class AdminMovieController extends Controller
         // ==============================================================
         $countCate = 0;
         $data = Movie::orderBy('created_at','desc')->first();
-        $id = $data->id;
         $tem_ca = '';
-        if($request->category1 != 0){
-            $countCate++;
+        $delete_data_category_movie = categorys::where('movie_id',$data->id)->delete(); //ลบหมวดหมู่เก่าออกก่อน
+        $request->category = array_unique($request->category);
+        foreach($request->category as $tmp_category)
+        {
+            if($tmp_category != 0){
+                $data_cate = new categorys;
+                $data_cate->category_id = $tmp_category;
+                $data_cate->movie_id = $data->id;
+                $data_cate->save();
+            }
             $tem_ca = $request->category1;
-        }
-        if($request->category2 != 0 && $request->category2 != $tem_ca){
-            $countCate++;
-            $tem_ca = $request->category2;
-        }
-        if($request->category3 != 0 && $request->category3 != $tem_ca){
-            $countCate++;
         }
         // ==============================================================
         //
         // เอา Categorys ออกจาก เพื่อเพิ่มใหม่
         //
         // ==============================================================
-        $delete_data_category_movie = categorys::where('movie_id',$id)->delete(); //ลบหมวดหมู่เก่าออกก่อน
-        for($i=0; $i< $countCate; $i++){
-            if($i == 0){
-                $category = $request->category1;
-            }
-            else if($i == 1)
-            {
-                $category = $request->category2;
-            }
-            else
-            {
-                $category = $request->category3;
-            }
-            $data_cate = new categorys;
-            $data_cate->category_id = $category;
-            $data_cate->movie_id = $id;
-            $data_cate->save();
-        }
+        // for($i=0; $i< $countCate; $i++){
+        //     if($i == 0){
+        //         $category = $request->category1;
+        //     }
+        //     else if($i == 1)
+        //     {
+        //         $category = $request->category2;
+        //     }
+        //     else
+        //     {
+        //         $category = $request->category3;
+        //     }
+        //     $data_cate = new categorys;
+        //     $data_cate->category_id = $category;
+        //     $data_cate->movie_id = $id;
+        //     $data_cate->save();
+        // }
         session()->flash('message', 'เพิ่มหนังเรียบร้อย');
         return redirect()->route('admin.movie');
     }
@@ -348,7 +348,7 @@ class AdminMovieController extends Controller
         $data['movie'] = movie::find($id);
         $data['category'] = genre::orderBy('title_category_eng', 'asc')->get();
         $data['setting'] = Setting::find(1);
-        $data['selected'] = $data['movie']->CategoryMovie()->where('movie_id',$data['movie']->id)->orderBy('updated_at', 'desc')->limit(3)->get();
+        $data['selected'] = $data['movie']->CategoryMovie()->where('movie_id',$data['movie']->id)->orderBy('updated_at', 'desc')->limit(6)->get();
         return view('admin.page.movie.edit', $data);
     }
 
@@ -402,7 +402,7 @@ class AdminMovieController extends Controller
         $data->youtube = $youtube;
         $data->description = $request->description;
         $data->api_update = 0;
-        $data->movie_hot = $request->movie_hot;
+        $data->movie_hot = isset($request->movie_hot) ? $request->movie_hot : 0  ;
 
         $filemovie1 = '';
         if($data->type == "movie")
@@ -451,7 +451,15 @@ class AdminMovieController extends Controller
 
 
         $data->year = $request->year;
-        $data->imdb = $request->imdb;
+        if($setting->imdb == "1")
+        {
+            $data->imdb = $request->imdb;
+        }
+        else
+        {
+            $data->score = $request->score;
+            $data->runtime = $request->runtime;
+        }
         // $data->new_movie = $request->new_movie;
         // $data->score;
         // $data->vip = '0';
@@ -561,42 +569,52 @@ class AdminMovieController extends Controller
         // $tem_ca เช็คว่าเลือกซ้ำกันไหม
         //
         // ==============================================================
-        $countCate = 0;
-        $tem_ca = '';
-        if($request->category1 != 0){
-            $countCate++;
-            $tem_ca = $request->category1;
-        }
-        if($request->category2 != 0 && $request->category2 != $tem_ca){
-            $countCate++;
-            $tem_ca = $request->category2;
-        }
-        if($request->category3 != 0 && $request->category3 != $tem_ca){
-            $countCate++;
-        }
+        // $countCate = 0;
+        // $tem_ca = '';
+        // if($request->category1 != 0){
+        //     $countCate++;
+        //     $tem_ca = $request->category1;
+        // }
+        // if($request->category2 != 0 && $request->category2 != $tem_ca){
+        //     $countCate++;
+        //     $tem_ca = $request->category2;
+        // }
+        // if($request->category3 != 0 && $request->category3 != $tem_ca){
+        //     $countCate++;
+        // }
         // ==============================================================
         //
         // เอา Categorys ออกจาก เพื่อเพิ่มใหม่
         //
         // ==============================================================
-        $delete_data_category_movie = categorys::where('movie_id',$id)->delete(); //ลบหมวดหมู่เก่าออกก่อน
-        for($i=0; $i< $countCate; $i++){
-            if($i == 0){
-                $category = $request->category1;
+        $delete_data_category_movie = categorys::where('movie_id',$data->id)->delete(); //ลบหมวดหมู่เก่าออกก่อน
+        $request->category = array_unique($request->category);
+        foreach($request->category as $tmp_category)
+        {
+            if($tmp_category != 0){
+                $data_cate = new categorys;
+                $data_cate->category_id = $tmp_category;
+                $data_cate->movie_id = $data->id;
+                $data_cate->save();
             }
-            else if($i == 1)
-            {
-                $category = $request->category2;
-            }
-            else
-            {
-                $category = $request->category3;
-            }
-            $data_cate = new categorys;
-            $data_cate->category_id = $category;
-            $data_cate->movie_id = $id;
-            $data_cate->save();
         }
+        // for($i=0; $i< $countCate; $i++){
+        //     if($i == 0){
+        //         $category = $request->category1;
+        //     }
+        //     else if($i == 1)
+        //     {
+        //         $category = $request->category2;
+        //     }
+        //     else
+        //     {
+        //         $category = $request->category3;
+        //     }
+        //     $data_cate = new categorys;
+        //     $data_cate->category_id = $category;
+        //     $data_cate->movie_id = $id;
+        //     $data_cate->save();
+        // }
         session()->flash('message', 'แก้ไขหนังเรียบร้อย');
         return redirect()->route('admin.movie');
     }
