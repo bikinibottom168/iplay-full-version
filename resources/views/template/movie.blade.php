@@ -44,7 +44,7 @@
             <div class="modal-dialog" style="max-width: 1000px">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <iframe id="player" src="https://www.youtube.com/embed/{{ $movie->youtube }}" width="100%" height="450px" frameborder="0" allowfullscreen=""></iframe>
+                        <iframe class="youtube-iframe"  src="https://www.youtube.com/embed/{{ $movie->youtube }}" width="100%" height="450px" frameborder="0" allowfullscreen=""></iframe>
                     </div>
                     <div class="modal-footer text-center">
                         <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
@@ -159,8 +159,10 @@
 <script>
     $(document).ready(function () {
         $('#trailer').on('hidden.bs.modal', function () {
-            var player;
-            function onYouTubePlayerAPIReady() {player = new YT.Player('player');}
+            $('.youtube-iframe').each(function(index) {
+            $(this).attr('src', $(this).attr('src'));
+            return false;
+      });
         });
 
         $("#share-movie").jsSocials({
