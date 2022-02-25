@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-        @include('template.content-main', ['title' => env('SCRIPT_TYPE', '')  == "av" ? "หนังโป๊" : (env('SCRIPT_TYPE', '')  == "anime" ? "อนิเมะ" : env('SCRIPT_TYPE', '')  == "movie" ? "หนังออนไลน์" : "" )])
+        @include('template.content-main', ['title' => env('SCRIPT_TYPE', '')  == "av" ? "หนังโป๊" : (env('SCRIPT_TYPE', '')  == "anime" ? "อนิเมะ" : env('SCRIPT_TYPE', '')  == "movie" ? "หนังออนไลน์ss" : "" )])
 @endsection
 
 @section('content-right')
