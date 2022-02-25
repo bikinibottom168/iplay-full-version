@@ -17,6 +17,7 @@ use URL;
 
 class InstallController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -56,6 +57,57 @@ class InstallController extends Controller
             $data['admin']->admin = 1;
             $data['admin']->vip = "2025-01-01 01:00:00";
             $data['admin']->save();
+        
+        // ======================================
+        //      สร้าง Table menu
+        // ======================================
+        Schema::create('tvs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->text('url')->nullable();
+            $table->text('category')->nullable();
+            $table->text('top_channel')->nullable();
+            $table->text('image')->nullable();
+            $table->text('status')->nullable();
+            $table->timestamps();
+        });
+
+        // ======================================
+        //      สร้าง Table about
+        // ======================================
+        Schema::create('abouts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->text('type')->nullable();
+            $table->timestamps();
+        });
+
+        // ======================================
+        //      สร้าง Table about
+        // ======================================
+        Schema::create('articles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->string('slug_title')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('type')->nullable();
+            $table->integer('view')->nullable();
+            $table->text('image')->nullable();
+            $table->timestamps();
+        });
+        
+        // ======================================
+        //      สร้าง Table Playlist
+        // ======================================
+        Schema::create('playlists', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->text('slug_title')->nullable();
+            $table->text('playlist')->nullable();
+            $table->text('image')->nullable();
+            $table->timestamps();
+        });
 
         // ======================================
         //      สร้าง Table menu
@@ -124,6 +176,8 @@ class InstallController extends Controller
                 $table->text('imdb')->nullable();
                 $table->text('resolution')->nullable();
                 $table->text('view')->nullable();
+                $table->text('director')->nullable();
+                $table->text('actors')->nullable();
                 $table->string('api_update')->default(0);
                 $table->integer('start_play')->default(0);
                 $table->integer('movie_hot')->default(0);
@@ -138,14 +192,18 @@ class InstallController extends Controller
             Schema::create('ads', function (Blueprint $table) {
                 $table->increments('id');
                 $table->text('title_ads')->nullable();
-                $table->integer('count_click')->default(0);
+                $table->text('count_click')->nullable();
+                $table->text('show_ads')->nullable();
+                $table->text('position')->nullable();
                 $table->text('url_ads')->nullable();
-                $table->string('show_ads')->default(0);
+                $table->text('status_button')->nullable();
                 $table->text('image_ads')->nullable();
                 $table->string('layout_ads', 10)->nullable();
                 $table->integer('status_ads')->default(0);
                 $table->string('number_ads', 10)->default(0);
                 $table->text('expired')->nullable();
+                $table->text('button')->nullable();
+                $table->text('type')->nullable();
                 $table->timestamps();
             });
 
@@ -200,12 +258,14 @@ class InstallController extends Controller
                 $table->text('icon')->nullable();
                 $table->text('facebook')->nullable();
                 $table->text('twitter')->nullable();
-                $table->integer('imdb')->default('1')->nullable();
+                $table->integer('imdb')->default('0')->nullable();
                 $table->integer('time_skip')->default('3');
                 $table->string('tmpay', 15)->nullable();
                 $table->text('header')->nullable();
                 $table->text('footer')->nullable();
+                $table->text('text_index')->nullable();
                 $table->string('banner_status')->default('1');
+                $table->string('last_seo')->default('1');
                 // $table->text('texthome')->nullable();
                 // $table->text('textrun')->nullable();
                 // $table->text('textrun_color')->nullable();
@@ -222,8 +282,9 @@ class InstallController extends Controller
             // $data['setting']->textrun = "IAMTHEME สคริปเว็บดูหนัง";
             // $data['setting']->textrun_color = "#ff0000";
             $data['setting']->keyword = "IAMTHEME สคริปเว็บดูหนัง";
-            $data['setting']->facebook = "https://facebook.com";
-            $data['setting']->twitter = "https://twitter.com";
+            $data['setting']->facebook = "";
+            $data['setting']->twitter = "";
+            $data['setting']->imdb = 0;
             $data['setting']->save();
 
         
@@ -234,6 +295,7 @@ class InstallController extends Controller
             $table->increments('id');
             $table->text('seo_title')->nullable();
             $table->text('seo_description_type')->nullable();
+            $table->text('front_seo')->nullable();
             $table->timestamps();
         });
         //   เพิ่มข้อมูลเว็บ

@@ -60,6 +60,11 @@ class AdminPlaylistController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $title = explode(" ",$request->title);
         $title = implode("-",$title);
         $title = explode("(",$title);
@@ -133,6 +138,12 @@ class AdminPlaylistController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
+
         $title = explode(" ",$request->title);
         $title = implode("-",$title);
         $title = explode("(",$title);
@@ -175,6 +186,11 @@ class AdminPlaylistController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = Playlist::where('id',$id)->delete();
 
         session()->flash('message', 'ลบเรียบร้อย');

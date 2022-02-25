@@ -12,9 +12,16 @@ use App\Categorys_movies as categorys;
 use Intervention\Image\ImageManager;
 use GuzzleHttp\Client;
 use Auth;
+use App\Http\Controllers\CheckTableController as checkTable;
 
 class AdminMovieController extends Controller
 {
+
+    public function __construct()
+    {
+        $check = new checkTable;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -86,6 +93,11 @@ class AdminMovieController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $setting = Setting::find(1);
         $title = explode(" ",$request->title);
         $title = implode("-",$title);
@@ -139,6 +151,8 @@ class AdminMovieController extends Controller
         {
             $data->score = $request->score;
             $data->runtime = $request->runtime;
+            $data->director = $request->director;
+            $data->actors = $request->actors;
         }
 
         // $data->type = $request->type;
@@ -361,6 +375,16 @@ class AdminMovieController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $setting = Setting::find(1);
         $title = explode(" ",$request->title);
         $title = implode("-",$title);
@@ -627,6 +651,11 @@ class AdminMovieController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = movie::find($id)->delete();
 
         session()->flash('message', 'ลบเรียบร้อย');

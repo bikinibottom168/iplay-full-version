@@ -57,6 +57,11 @@ class AdminAboutController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = new about;
         $data->title = $request->title;
         $data->type = $request->customRadioInline1; // Radio Type
@@ -111,6 +116,11 @@ class AdminAboutController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = about::find($id);
         $data->title = $request->title;
         $data->type = $request->customRadioInline1; // Radio Type
@@ -137,6 +147,11 @@ class AdminAboutController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = about::where('id',$id)->delete();
 
         session()->flash('message', 'ลบเรียบร้อย');

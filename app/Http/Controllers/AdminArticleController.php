@@ -51,6 +51,11 @@ class AdminArticleController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = new Article;
         $data->title = $request->title;
         $data->description = $request->description;
@@ -154,6 +159,11 @@ class AdminArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = Article::find($id);
         $data->title = $request->title;
         $data->description = $request->description;

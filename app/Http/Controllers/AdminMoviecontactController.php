@@ -56,6 +56,11 @@ class AdminMoviecontactController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $setting = Setting::find(1);
         $data = new Tv;
         $data->title = $request->title;
@@ -122,6 +127,11 @@ class AdminMoviecontactController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $setting = Setting::find(1);
         $data = Tv::findOrfail($id);
         $data->title = $request->title;
@@ -170,6 +180,10 @@ class AdminMoviecontactController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
         
         $data = req::where('id', '=' ,$id)->delete();
 

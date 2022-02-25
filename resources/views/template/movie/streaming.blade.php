@@ -1,14 +1,13 @@
 @php
-    if(env('PROTECT_STREAMING', '0') == "1"){
         if(isset($_SERVER['HTTP_REFERER'])) {
-            if(!strpos($_SERVER['HTTP_REFERER'], base64_decode(env("STREAMING_APP","localhost/")))){
+            if(!strpos($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST'])){
                 die('Unauthorized access');
             }  
         }
         else {
             die('Unauthorized access');
         }
-    }
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">

@@ -38,7 +38,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:5,1',
+            'throttle:60,1',
             'bindings',
         ],
     ];
@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin'=> \App\Http\Middleware\Admin::class,
         'application'=> \App\Http\Middleware\Application::class,
+        'install' => \App\Http\Middleware\Install::class,
     ];
 }

@@ -20,6 +20,7 @@
 
 <body>
   <!-- Sidenav -->
+  @include('template.demo', ['text' => "รับทำเว็บดูหนังออนไลน์ อะนิเมะ เอวีJAPAN สนใจติดต่อ"])
   <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
       <!-- Brand -->

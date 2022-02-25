@@ -68,19 +68,28 @@
         @if($movie->type == "movie")
         <div class="card">
             <div class="card-header">
-                ตัวเล่นหลัก @if(env('STREAMING_TYPE', 'proxy') == "streaming")
-                @if($movie->file_main != "" || $movie->file_openload != "" || $movie->file_streamango != "" || $movie->file_main_2 != "" || $movie->file_openload_2 != "" || $movie->file_streamango_2 != "" || $movie->file_main_3 != "" || $movie->file_openload_3 != "" || $movie->file_streamango_3 != "")
-                    <button class="btn btn-danger sound_path" type="button" data-sound="sound_th" class="sound_path btn btn-primary" data-href="{{ $movie->file_main != "" ? $movie->file_main : ($movie->file_main_2 != "" ? $movie->file_main_2 : ($movie->file_main_3 != "" ? $movie->file_main_3 : '' )) }}">
-                        <i class="fas fa-play"></i>
-                        พากย์ไทย
-                    </button>
-                @endif
-                @if($movie->file_main_sub != "" || $movie->file_openload_sub != "" || $movie->file_streamango_sub != "" || $movie->file_main_sub_2 != "" || $movie->file_openload_sub_2 != "" || $movie->file_streamango_sub_2 != "" || $movie->file_main_sub_3 != "" || $movie->file_openload_sub_3 != "" || $movie->file_streamango_sub_3 != "")
-                    <button class="btn btn-dark sound_path" type="button" data-sound="sound_sub" class="sound_path btn btn-primary" data-href="{{ $movie->file_main != "" ? $movie->file_main : ($movie->file_main_2 != "" ? $movie->file_main_2 : ($movie->file_main_3 != "" ? $movie->file_main_3 : '' )) }}">
-                        <i class="far fa-closed-captioning"></i>
-                        ซับไทย
-                    </button>
-                @endif
+                ตัวเล่นหลัก 
+                @if(env('STREAMING_TYPE', 'proxy') == "streaming")
+                    @if($movie->file_main != "" || $movie->file_openload != "" || $movie->file_streamango != "" || $movie->file_main_2 != "" || $movie->file_openload_2 != "" || $movie->file_streamango_2 != "" || $movie->file_main_3 != "" || $movie->file_openload_3 != "" || $movie->file_streamango_3 != "")
+                        @php
+                            $source = $movie->file_main != "" ? $movie->file_main : ($movie->file_main_2 != "" ? $movie->file_main_2 : ($movie->file_main_3 != "" ? $movie->file_main_3 : ''));
+                            $source = route('streaming', base64_encode(Crypt::encryptString($source)));
+                        @endphp
+                        <button class="btn btn-danger sound_path" type="button" data-sound="sound_th" class="sound_path btn btn-primary" data-href="{{ $source }}">
+                            <i class="fas fa-play"></i>
+                            พากย์ไทย
+                        </button>
+                    @endif
+                    @if($movie->file_main_sub != "" || $movie->file_openload_sub != "" || $movie->file_streamango_sub != "" || $movie->file_main_sub_2 != "" || $movie->file_openload_sub_2 != "" || $movie->file_streamango_sub_2 != "" || $movie->file_main_sub_3 != "" || $movie->file_openload_sub_3 != "" || $movie->file_streamango_sub_3 != "")
+                        @php
+                            $source = $movie->file_main_sub != "" ? $movie->file_main_sub : ($movie->file_main_sub_2 != "" ? $movie->file_main_sub_2 : ($movie->file_main_sub_3 != "" ? $movie->file_main_sub_3 : ''));
+                            $source = route('streaming', base64_encode(Crypt::encryptString($source)));
+                        @endphp
+                        <button class="btn btn-dark sound_path" type="button" data-sound="sound_sub" class="sound_path btn btn-primary" data-href="{{ $source }}">
+                            <i class="far fa-closed-captioning"></i>
+                            ซับไทย
+                        </button>
+                    @endif
                 @else
                     @if($movie->file_main != "" || $movie->file_openload != "" || $movie->file_streamango != "" || $movie->file_main_2 != "" || $movie->file_openload_2 != "" || $movie->file_streamango_2 != "" || $movie->file_main_3 != "" || $movie->file_openload_3 != "" || $movie->file_streamango_3 != "")
                         <button class="btn btn-link sound_path" type="button" data-sound="sound_th" class="sound_path btn btn-primary" data-href="{{ $movie->file_main != "" ? $movie->file_main : ($movie->file_main_2 != "" ? $movie->file_main_2 : ($movie->file_main_3 != "" ? $movie->file_main_3 : '' )) }}">
@@ -95,54 +104,82 @@
                 @endif
             @endif
             </div>
-            {{-- <div class="card-body">
-                <ul class="list-group list-group-flush">
-                @if($movie->file_main_sub_3 != "")
-                    @php
-                    // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
-                    if(strrpos($movie->file_main_sub_3, '.mp4') !== false)
-                    {
-                        $movie->file_main_sub_3 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_3)));
-                    }
-                    @endphp
-                    <button data-href="{{ $movie->file_main_sub_3 }}" type="button" class="resolution btn btn-default"
-                        style="margin-left: 0px;border-radius: 2px;border-bottom: 4px solid #c3c3c3;padding: 5px 10px;font-size: 13px;font-weight: 600;color: #555;margin: 0px">
-                        <i class="glyphicon glyphicon-sd-video"></i>
-                        360p
-                    </button>
-                    <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">360p</li>
-                @endif
-                @if($movie->file_main_sub_2 != "")
-                    @php
-                    // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
-                    if(strrpos($movie->file_main_sub_2, '.mp4') !== false)
-                    {
-                        $movie->file_main_sub_2 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_2)));
-                    }
-                    @endphp
-                    <button data-href="{{ $movie->file_main_sub_2 }}" type="button" class="resolution btn btn-default"
-                        style="margin-left: 0px;border-radius: 2px;border-bottom: 4px solid #c3c3c3;padding: 5px 10px;font-size: 13px;font-weight: 600;color: #555;margin: 0px">
-                        <i class="glyphicon glyphicon-hd-video"></i>
-                        720p
-                    </button>
-                    <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">720p</li>
-                @endif
-                @if($movie->file_main_sub != "")
-                    @php
-                    // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
-                    if(strrpos($movie->file_main_sub, '.mp4') !== false)
-                    {
-                        $movie->file_main_sub = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub)));
-                    }
-                    @endphp
-                    <button data-href="{{ $movie->file_main_sub }}" type="button" class="resolution btn btn-primary"
-                        style="color: #fff;margin-left: 0px;border-radius: 2px;border-bottom: 4px solid #127ba3;font-size: 13px;font-weight: 600;color: #fff;margin-right: 0px">
-                        <i class="glyphicon glyphicon-hd-video"></i>
-                        1080p
-                    </button>
-                @endif
+            <div class="card-body">
+                <ul class="list-group list-group-flush sound-movie" id="sound_th">
+                    @if($movie->file_main_sub_3 != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub_3, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub_3 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_3)));
+                        }
+                        @endphp
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">360p</li>
+                    @endif
+                    @if($movie->file_main_sub_2 != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub_2, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub_2 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_2)));
+                        }
+                        @endphp
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">720p</li>
+                    @endif
+                    @if($movie->file_main_sub != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub)));
+                        }
+                        @endphp
+                        {{-- <button data-href="{{ $movie->file_main_sub }}" type="button" class="resolution btn btn-primary"
+                            style="color: #fff;margin-left: 0px;border-radius: 2px;border-bottom: 4px solid #127ba3;font-size: 13px;font-weight: 600;color: #fff;margin-right: 0px">
+                            <i class="glyphicon glyphicon-hd-video"></i>
+                            1080p
+                        </button> --}}
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub }}">1080p</li>
+                    @endif
                 </ul>
-            </div> --}}
+                <ul class="list-group list-group-flush sound-movie" id="sound_sub" style="display: none">
+                    @if($movie->file_main_sub_3 != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub_3, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub_3 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_3)));
+                        }
+                        @endphp
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">360p</li>
+                    @endif
+                    @if($movie->file_main_sub_2 != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub_2, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub_2 = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub_2)));
+                        }
+                        @endphp
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub_3 }}">720p</li>
+                    @endif
+                    @if($movie->file_main_sub != "")
+                        @php
+                        // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
+                        if(strrpos($movie->file_main_sub, '.mp4') !== false)
+                        {
+                            $movie->file_main_sub = route('streaming', base64_encode(Crypt::encryptString($movie->file_main_sub)));
+                        }
+                        @endphp
+                        {{-- <button data-href="{{ $movie->file_main_sub }}" type="button" class="resolution btn btn-primary"
+                            style="color: #fff;margin-left: 0px;border-radius: 2px;border-bottom: 4px solid #127ba3;font-size: 13px;font-weight: 600;color: #fff;margin-right: 0px">
+                            <i class="glyphicon glyphicon-hd-video"></i>
+                            1080p
+                        </button> --}}
+                        <li class="list-group-item resolution" data-href="{{ $movie->file_main_sub }}">1080p</li>
+                    @endif
+                </ul>
+            </div>
         </div>
         @endif
         <div id="fb-root"></div>

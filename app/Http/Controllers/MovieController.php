@@ -42,8 +42,9 @@ class MovieController extends Controller
 
   public function __construct()
   {
-    $check = new checkTable();
+    $this->middleware('install');
   }
+  
   // Set Data;
   public $data;
   public $i = 0;
@@ -208,10 +209,9 @@ class MovieController extends Controller
 
   public function index(Request $request)
   {
-
-    // if (!Schema::hasTable('user')) {
-    //   return redirect()->route('install');
-    // }
+    if (!Schema::hasTable('settings')) {
+      return redirect()->route('install');
+    }
 
     $data = $this->Main(); // Main มาใช้
 
@@ -225,7 +225,7 @@ class MovieController extends Controller
 
     $data['movie'] = movie::orderBy('updated_at', 'desc')
       ->select('id', 'title', 'slug_title', 'sound', 'image', 'imdb', 'resolution', 'type', 'movie_hot', 'score', 'updated_at')
-      ->paginate(36)
+      ->paginate(40)
       ->onEachSide(1);
 
 

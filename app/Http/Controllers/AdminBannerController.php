@@ -53,6 +53,11 @@ class AdminBannerController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = new banner;
         $data->title_ads = $request->title;
         $data->url_ads = $request->url;
@@ -147,6 +152,10 @@ class AdminBannerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
 
         $data = banner::find($id);
         $data->title_ads = $request->title;
@@ -199,6 +208,11 @@ class AdminBannerController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = banner::where('id', $id)->delete();
 
         session()->flash('message', 'ลบเรียบร้อย');

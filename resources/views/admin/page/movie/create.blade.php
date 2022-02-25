@@ -126,6 +126,14 @@
                                                     <label>Runtime</label>
                                                     <input type="text" name="runtime" placeholder="120" class="form-control form-control-line" >
                                                 </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Director</label>
+                                                    <input type="text" name="director" placeholder="Director" class="form-control form-control-line">
+                                                </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Actors</label>
+                                                    <input type="text" name="actors" placeholder="Actors" class="form-control form-control-line">
+                                                </div>
                                             @endif
                                             <div class="col-md-1 col-sm-6">
                                                 <label>ปี</label>

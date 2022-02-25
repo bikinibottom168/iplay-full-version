@@ -23,10 +23,6 @@ use Carbon\Carbon;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 
 Route::get('v1/movieall/{token}', 'ApiController@movieall');
 
@@ -39,23 +35,3 @@ Route::get('v1/moviecontact/{movieid}/', 'ApiController@moviecontact');
 Route::get('v1/collector/{id}/{movie}/{type}', 'ApiController@collector');
 
 Route::get('v1/loadmovie/{id?}/{ep?}/{player?}', 'ApiController@loadmovie');
-
-// Route::get('v1/useronline', 'ApiController@useronline');
-
-// Route::get('v1/get/token/wmsauth/{ip}', 'ApiController@get_token');
-
-
-// Route::get('v1/monthly{pingcode}', 'ApiController@monthly')
-
-
-/**
- *  Cron Join Update Movie
- * 
- */
-Route::get('v1/update/{token_hash}', 'ApiController@api');
-Route::get('v1/update-category/{token_hash}', 'ApiController@api_category');
-Route::get('v1/movie/{token}', 'ApiController@movie_api');
-Route::get('v1/movie-category/{token}', 'ApiController@movie_category_api');
-
-Route::get('v1/update/playlist/{id_playlist}/{id_movie}/{token_hash}', 'ApiController@update_playlist');
-

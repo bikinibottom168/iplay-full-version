@@ -66,6 +66,11 @@ class AdminCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = new category;
         $data->title_category = $request->title_category;
         $data->title_category_eng = $request->title_category_eng;
@@ -121,6 +126,11 @@ class AdminCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+
         $data = category::find($id);
         $data->timestamps = false;
         $data->title_category = $request->title_category;
@@ -141,6 +151,11 @@ class AdminCategoryController extends Controller
      */
     public function destroy($id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         $data = category::where('id',$id)->delete();
 
         session()->flash('message', 'ลบเรียบร้อย');

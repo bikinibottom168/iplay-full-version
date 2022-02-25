@@ -87,6 +87,11 @@ class AdminSettingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(env("DEMO",'0') == "1")
+        {
+            return redirect()->back();
+        }
+        
         // /** Check Domain IAMTHEME **/
         // $checkDomain = new Client;
         // $res = $checkDomain->request('GET', $url, ['http_errors' => false]);

@@ -3,7 +3,7 @@
         <h1 class="title-header text-dark">{{ $title }}</h1>
     </div>
     @forelse($movie as $k)
-    <div class="col-lg-6 col-md-6 col-10 my-3 centered">
+    <div class="col-lg-4 col-md-4 col-10 my-3 centered">
         <a href="{{ route('movie', ['title' => $k->slug_title]) }}" class="item-movie">
             <div class="slide-button-play">
                 <i class="far fa-play-circle" style="color: #FFBB00"></i>
@@ -16,11 +16,11 @@
                 {{ $k->resolution }}
             </div>
             <div class="sound-label text-white p-2">
-                {{ $k->sound == "ST" ? "ซาวด์แทรค" : ($k->sound == "TH" || "Thai" ? "เสียงไทย" : ($k->sound == "TS" || $k->sound == "SoundTrack(T)+Thai" ? "ซาวด์แทรค": $k->sound)) }}
+                {{ $k->sound == "ST" ? "ซาวด์แทรค" : ($k->sound == "TH" || $k->sound == "Thai" ? "เสียงไทย" : ($k->sound == "TS" || $k->sound == "SoundTrack(T)+Thai" ? "ซาวด์แทรค": $k->sound)) }}
             </div>
             @endif
             <img src="{{ asset($k->image) }}" alt="{{ $k->title }}" class="item-poster img-fluid">
-            <h3 class="title-poster text-dark mt-2">{{ $k->title }}</h3>
+            <h2 class="title-poster text-dark mt-2">{{ $k->title }}</h2>
         </a>
     </div>
     @empty
@@ -80,7 +80,8 @@
         opacity: 1;
         transition: 0.5s;
         width: 100%;
-        height: 350px;
+        max-height: 230px;
+        min-height: 230px;
     }
 
     .slide-button-play {
@@ -133,7 +134,8 @@
             opacity: 1;
             transition: 0.5s;
             width: 100%;
-            height: 200px;
+            max-height: 220px;
+            min-height: 220px;
         }
     }
 </style>

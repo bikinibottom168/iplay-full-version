@@ -214,7 +214,7 @@
             else 
             {
                 @endphp
-                <iframe src="{{ $file_main }}" id="player_iframe" onload="resizeIframe(this)" onchange="resizeIframe(this)" style="width: 100%;"
+                <iframe src="{{ $file_main }}" id="player_iframe" style="width: 100%;"
                     allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" scrolling="no">
                 </iframe>
                 @php
@@ -274,7 +274,7 @@
 {{-- END IFRAME PLAYER --}}
 @if($movie->type == "movie")
     {{-- ThaiSound --}}
-<div id="sound_th" class="sound_container" style="display: none">
+{{-- <div id="sound_th" class="sound_container" style="display: none"> --}}
 
         {{-- <div class="player_ep">
             <div style="text-align: center">
@@ -319,8 +319,8 @@
                 <br>
             </div>
         </div> --}}
-        <div id="google_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "main" ? 'block' : 'none' }};">
-                {{-- @if($movie->file_main_3 != "")
+        {{-- <div id="google_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "main" ? 'block' : 'none' }};">
+                @if($movie->file_main_3 != "")
                     @php
                     // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
                     if(strrpos($movie->file_main_3, '.mp4') !== false)
@@ -361,11 +361,11 @@
                         <i class="glyphicon glyphicon-hd-video"></i>
                         1080p
                     </button>
-                @endif --}}
-        </div>
+                @endif
+        </div> --}}
     
-        <div id="openload_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "openload" ? 'block' : 'none' }}">
-                {{-- @if($movie->file_openload_3 != "")
+        {{-- <div id="openload_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "openload" ? 'block' : 'none' }}">
+                @if($movie->file_openload_3 != "")
                     @php
                     // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
                     if(strrpos($movie->file_openload_3, '.mp4') !== false)
@@ -406,10 +406,10 @@
                         <i class="glyphicon glyphicon-hd-video"></i>
                         1080p
                     </button>
-                @endif --}}
-        </div>
-        <div id="streamango_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "streamango" ? 'block' : 'none' }}">
-                {{-- @if($movie->file_streamango_3 != "")
+                @endif
+        </div> --}}
+        {{-- <div id="streamango_res" class="resolution_path" style="text-align: right;display: {{ $file_resolution == "streamango" ? 'block' : 'none' }}">
+                @if($movie->file_streamango_3 != "")
                     @php
                     // ตรวจสอบว่าเป็นไฟล์ MP4 ตรงหรือไม่
                     if(strrpos($movie->file_streamango_3, '.mp4') !== false)
@@ -450,12 +450,12 @@
                         <i class="glyphicon glyphicon-hd-video"></i>
                         1080p
                     </button>
-                @endif --}}
-        </div>
-    </div>
+                @endif
+        </div> --}}
+    {{-- </div> --}}
     
     {{-- Subtitle --}}
-    <div id="sound_sub" class="sound_container" style="display: none">
+    {{-- <div id="sound_sub" class="sound_container" style="display: none"> --}}
     
         {{-- <div class="player_ep">
             <div style="text-align: center">
@@ -545,7 +545,7 @@
                         1080p
                     </button>
                 @endif --}}
-        </div>
+        {{-- </div> --}}
     
         <div style="text-align: right" id="openload_res_sub" class="resolution_path" style="display: none">
                 {{-- @if($movie->file_openload_sub_3 != "")
@@ -760,8 +760,9 @@
             var ep = jQuery(this).attr('data-href'); // ดึง URL
             jQuery("#player_iframe").attr('src', ep); // เปลี่ยน ep ให้ iframe
 
-            jQuery(".resolution").removeClass('btn-danger').addClass('btn-dark'); // ลบ Active Button
-            jQuery(this).removeClass('btn-default').addClass('btn-danger'); // ลบ Active Button
+            jQuery(".resolution").removeClass('bg-warning') // ลบ Active Button
+            jQuery(this).addClass('bg-warning') // ลบ Active Button
+            // jQuery(this).removeClass('btn-default').addClass('btn-danger'); // ลบ Active Button
         });
 
         jQuery(".sound_path").click(function(){
@@ -770,11 +771,12 @@
             jQuery(this).removeClass('btn-dark').addClass('btn-danger'); // ลบ Active Button
 
             jQuery(".sound_container").hide();
-
+            $(".sound-movie").hide();
             var path = jQuery(this).attr('data-sound');
+
             var ep = jQuery(this).attr('data-href'); // ค้นหา url ไฟล์
-            jQuery("#player_iframe").attr('src', ep); // เปลี่ยน ep ให้ iframe
             console.log(path);
+            jQuery("#player_iframe").attr('src', ep); // เปลี่ยน ep ให้ iframe
             jQuery("#"+path).show();
         });
 

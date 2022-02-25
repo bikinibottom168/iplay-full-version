@@ -42,5 +42,14 @@ class CheckTableController extends Controller
                 $table->text('front_seo')->nullable();
             });
         }
+
+        if (!Schema::hasColumn('movies','director'))
+        {
+            Schema::table('movies', function($table)
+            {
+                $table->text('director')->nullable();
+                $table->text('actors')->nullable();
+            });
+        }
     }
 }

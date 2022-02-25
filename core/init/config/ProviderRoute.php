@@ -23,6 +23,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/av/get', 'MovieController@avGet')->name('av.get');
 Route::post('/av/get', 'MovieController@avPost')->name('av.post');
 
+// -----------------------------
+//      Install ติดตั้ง
+// -----------------------------
+Route::get('/install', 'InstallController@index')->name('install');
+Route::post('/install', 'InstallController@store')->name('install.submit');
+Route::get('/support', 'InstallController@index')->name('support');
+
 
 Route::get('/robots.txt', 'SitemapController@robots_txt')->name('sitemap.txt');
 Route::get('/sitemap.xml', 'SitemapController@index')->name('sitemap.index');
@@ -30,14 +37,6 @@ Route::get('/sitemap-post.xml', 'SitemapController@post')->name('sitemap.post');
 Route::get('/sitemap-category.xml', 'SitemapController@category')->name('sitemap.category');
 Route::get('/sitemap-tag-movie.xml', 'SitemapController@tag')->name('sitemap.tag');
 
-
-// -----------------------------
-//      Install ติดตั้ง
-// -----------------------------
-Route::get('/install', 'InstallController@index')->name('install');
-Route::post('/install', 'InstallController@store')->name('install.submit');
-Route::get('/how', 'InstallController@index')->name('how');
-Route::get('/support', 'InstallController@index')->name('support');
 
 
 ##################################################

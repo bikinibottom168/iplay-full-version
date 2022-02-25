@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-5 col-sm-12">
+                                            <div class="col-md-4 col-sm-12">
                                                 <label>Title (ชื่อเรื่อง)</label>
                                                 <input type="text" name="title" id="title" placeholder="ชื่อเรื่อง" class="form-control form-control-line" value="{{ $movie->title }}">
                                             </div>
@@ -101,13 +101,21 @@
                                                     <label>Runtime</label>
                                                     <input type="text" name="runtime" placeholder="120" class="form-control form-control-line" value="{{ $movie->runtime }}">
                                                 </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Director</label>
+                                                    <input type="text" name="director" placeholder="Director" class="form-control form-control-line" value="{{ $movie->director }}">
+                                                </div>
+                                                <div class="col-md-1 col-sm-6">
+                                                    <label>Actors</label>
+                                                    <input type="text" name="actors" placeholder="Actors" class="form-control form-control-line" value="{{ $movie->actors }}">
+                                                </div>
                                             @endif
                                             <div class="col-md-1 col-sm-6">
                                                 <label>ปี</label>
                                                 <input type="text" name="year" placeholder="ปีหนัง" class="form-control form-control-line" value="{{ $movie->year }}">
                                             </div>
-                                            <div class="col-md-2 col-sm-6">
-                                                <label>ความละเอียดภาพ</label>
+                                            <div class="col-md-1 col-sm-6">
+                                                <label>Resolution</label>
                                                 <select class="form-control form-control-line" name="resolution">
                                                     <option value="FullHD" {{ $movie->resolution == 'FullHD' ? 'selected' : '' }}>FullHD</option>
                                                     <option value="HD" {{ $movie->resolution == 'HD' ? 'selected' : '' }}>HD</option>
@@ -115,7 +123,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-1 col-sm-6">
-                                                <label>ประเภทไฟล์</label>
+                                                <label>ประเภท</label>
                                                 <select class="form-control form-control-line" id="list_check" name="list_check">
                                                     <option value="movie" {{ $movie->type === 'movie' ? 'selected' : '' }}>หนัง</option>
                                                     <option value="series" {{ $movie->type === 'series' ? 'selected' : '' }}>ซีรี่ย์</option>

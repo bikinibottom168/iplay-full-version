@@ -7,7 +7,7 @@
 
     </div>
     {{-- Paginate Custom view --}}
-    {{ $movie->links('template.paginate', ['ads_footer'=>$ads_footer]) }}
+    {{ $movie->links('template.paginate', ['ads_footer'=>$ads_footer, 'show_ads' => $show_ads]) }}
 </div>
 
 <style>

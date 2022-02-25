@@ -66,6 +66,7 @@
 </head>
 
 <body style="background-color: {{ env("SCRIPT_BACKGROUND_COLOR", "#000") }}">
+    @include('template.demo', ['text' => "รับทำเว็บดูหนังออนไลน์ อะนิเมะ เอวีJAPAN สนใจติดต่อ"])
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: {{ env('SCRIPT_PRIMARY_COLOR', '') }};">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">

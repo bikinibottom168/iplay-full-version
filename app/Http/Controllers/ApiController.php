@@ -233,6 +233,194 @@ class ApiController extends Controller
         }
     }
 
+    // #################################
+    // API UPDATE SEO
+    // ##################################
+    public function seo(Request $request)
+    {
+        $update_last = Setting::first();
+
+        // $domain = "http://localhost:8000/";
+        if(env('SCRIPT_TYPE', 'movie') == "movie")
+        {
+            $domain = "https://api.vip-streaming.com/";
+        }
+        elseif(env('SCRIPT_TYPE', 'movie') == "av")
+        {
+            $domain = "https://av.iamtheme.com/";
+        }
+        elseif(env('SCRIPT_TYPE', 'movie') == "anime" || env('SCRIPT_TYPE', 'movie') == "series")
+        {
+            $domain = "https://anime.iamtheme.com/";
+        }
+
+
+        $client = new Client;
+        $response = $client->request('GET', $domain."api/v2/movie/seo?key=$request->key&page=$update_last->last_seo",['http_errors' => false]);
+        $get = json_decode($response->getBody());
+        foreach($get->data as $k)
+        {
+            $check = Movie::where('id', $k->id);
+
+            // มีหนังอยู่แล้ว
+            if($check->count() >= 1)
+            {
+                $checkDeleteDuplicate = Movie::where([['slug_title', $k->slug_title],['id','!=',$k->id]])->delete();
+
+                $check_version = $check->first();
+                // if($check_version->version != $k->version)
+                // {
+                    // อัพเดทข้อมูล เช่น ซีรี่ย์ Epison
+                    if($check_version->image != $k->image)
+                    {
+                        $part = $domain.$k->image;
+                        // $input = Input::file($part);
+                        $file = file_get_contents($part);
+                        $save = file_put_contents($k->image, $file);
+                        // $test = new ImageManager; // เรียกใช้ object เพราะไม่สามารถเรียกแบบ static ได้
+                        // $test->make($part)
+                        //     ->save($k->image);
+                    }
+
+                    $movie = Movie::find($k->id);
+
+                    // ถ้า resolution เหมือนเดิมไม่ต้องอัพเดท timestamps
+                    if($k->resolution == $movie->resolution)
+                    {
+                        $movie->timestamps = false;
+                    }
+                    else {
+                        // ถ้า resolution มีการอัพเดทให้การอัพเดท
+                        $movie->timestamps = false;
+                        $movie->created_at = Carbon::now();
+                    }
+                    
+                    $movie->title = $k->title;
+                    $movie->slug_title = $k->slug_title;
+                    $movie->new_movie = 0;
+                    $movie->type = $k->type;
+                    $movie->description = $k->description;
+                    $movie->youtube = $k->youtube;
+                    $movie->onair = $k->onair;
+                    $movie->actors = $k->actors;
+                    $movie->year = $k->year;
+                    $movie->imdb = $k->imdb;
+                    $movie->score = $k->score;
+                    $movie->resolution = $k->resolution;
+                    $movie->sound = $k->sound;
+                    $movie->runtime = $k->runtime;
+                    $movie->vip = 1;
+                    $movie->api_update = 1;
+                    $movie->image = $k->image;
+                    $movie->image_poster = $k->image_poster;
+                    $movie->file_main = $k->file_main;
+                    $movie->file_main_2 = $k->file_main_2;
+                    $movie->file_main_3 = $k->file_main_3;
+                    $movie->file_openload = $k->file_openload;
+                    $movie->file_openload_2 = $k->file_openload_2;
+                    $movie->file_openload_3 = $k->file_openload_3;
+                    $movie->file_streamango = $k->file_streamango;
+                    $movie->file_streamango_2 = $k->file_streamango_2;
+                    $movie->file_streamango_3 = $k->file_streamango_3;
+                    $movie->file_main_sub = $k->file_main_sub;
+                    $movie->file_main_sub_2 = $k->file_main_sub_2;
+                    $movie->file_main_sub_3 = $k->file_main_sub_3;
+                    $movie->file_openload_sub = $k->file_openload_sub;
+                    $movie->file_openload_sub_2 = $k->file_openload_sub_2;
+                    $movie->file_openload_sub_3 = $k->file_openload_sub_3;
+                    $movie->file_streamango_sub = $k->file_streamango_sub;
+                    $movie->file_streamango_sub_2 = $k->file_streamango_sub_2;
+                    $movie->file_streamango_sub_3 = $k->file_streamango_sub_3;
+                    $movie->file_series = $k->file_series;
+                    $movie->save();
+            }
+            else // ไม่มีหนัง
+            {
+                $movie = new Movie;
+                $movie->id = $k->id;
+                $movie->title = $k->title;
+                $movie->slug_title = $k->slug_title;
+                $movie->new_movie = 0;
+                $movie->type = $k->type;
+                $movie->description = $k->description;
+                $movie->youtube = $k->youtube;
+                $movie->onair = $k->onair;
+                $movie->actors = $k->actors;
+                $movie->year = $k->year;
+                $movie->imdb = $k->imdb;
+                $movie->score = $k->score;
+                $movie->resolution = $k->resolution;
+                $movie->sound = $k->sound;
+                $movie->runtime = $k->runtime;
+                $movie->vip = 1;
+                $movie->api_update = 1;
+                $movie->image = $k->image;
+                $movie->image_poster = $k->image_poster;
+                $movie->file_main = $k->file_main;
+                $movie->file_main_2 = $k->file_main_2;
+                $movie->file_main_3 = $k->file_main_3;
+                $movie->file_openload = $k->file_openload;
+                $movie->file_openload_2 = $k->file_openload_2;
+                $movie->file_openload_3 = $k->file_openload_3;
+                $movie->file_streamango = $k->file_streamango;
+                $movie->file_streamango_2 = $k->file_streamango_2;
+                $movie->file_streamango_3 = $k->file_streamango_3;
+                $movie->file_main_sub = $k->file_main_sub;
+                $movie->file_main_sub_2 = $k->file_main_sub_2;
+                $movie->file_main_sub_3 = $k->file_main_sub_3;
+                $movie->file_openload_sub = $k->file_openload_sub;
+                $movie->file_openload_sub_2 = $k->file_openload_sub_2;
+                $movie->file_openload_sub_3 = $k->file_openload_sub_3;
+                $movie->file_streamango_sub = $k->file_streamango_sub;
+                $movie->file_streamango_sub_2 = $k->file_streamango_sub_2;
+                $movie->file_streamango_sub_3 = $k->file_streamango_sub_3;
+                $movie->file_series = $k->file_series;
+                $movie->save();
+            }
+
+            if($k->image != "")
+            {
+                $part = $domain.$k->image;
+                // $test = new ImageManager; // เรียกใช้ object เพราะไม่สามารถเรียกแบบ static ได้
+                // $test->make($part)
+                //     ->save($k->image);
+                $file = file_get_contents($part);
+                $save = file_put_contents($k->image, $file);
+
+            }
+
+            // category update
+            $movie_id_array = array();
+            if(!empty($k->category_movie))
+            {
+                foreach($k->category_movie as $item_category)
+                {
+                    if($item_category->movie_id != null && $item_category->category_id != null) // ข้อมูลต้องไม่ว่าง
+                    {
+                        if(!in_array($item_category->movie_id, $movie_id_array))
+                        {
+                            DB::table('categorys_movies')->where('movie_id', $item_category->movie_id)->delete();
+                            array_push($movie_id_array,$item_category->movie_id);
+                        }
+        
+                        $movie = new categoryMovies;
+                        $movie->movie_id = $item_category->movie_id;
+                        $movie->category_id = $item_category->category_id;
+                        $movie->api_update = 1;
+                        $movie->save();
+                    }
+                }
+
+            }
+
+            echo "<a href='".route('movie', ['title' => $k->slug_title])."' target='_blank'>".$k->id.": ".$k->title."</a><br>";
+        }
+
+        //update last seo page
+        $update_last->last_seo = $update_last->last_seo + 1;
+        $update_last->save();
+    }
+
     public function api_category($token_hash)
     {
         if($token_hash != "353890")
@@ -262,22 +450,13 @@ class ApiController extends Controller
 
         foreach($get->data as $k)
         {
-            // $check = categoryMovies::where('id', $k->id);
+
             if(!in_array($k->movie_id, $movie_id_array))
             {
                 // $update = categoryMovies::where('movie_id', $k->movie_id)->delete();
                 DB::table('categorys_movies')->where('movie_id', $k->movie_id)->delete();
                 array_push($movie_id_array,$k->movie_id);
-                // $count_loop++;
-                // dd($k->movie_id);
             }
-            //             ->update([
-            //                 'movie_id' => $k->movie_id,
-            //                 'category_id' => $k->category_id,
-            //                 'api_update' => $k->api_update
-            //                 // 'api_update' => $k->version
-            //             ]);
-            
 
             $movie = new categoryMovies;
             // $movie->id = $k->id;
@@ -287,34 +466,6 @@ class ApiController extends Controller
             $movie->save();
 
 
-            // // มีหนังอยู่แล้ว
-            // if($check->count() >= 1)
-            // {
-            //     $check_version = $check->first();
-            //     // if($check_version->version != $k->version)
-            //     // {
-            //         // อัพเดทข้อมูล เช่น ซีรี่ย์ Epison
-
-            //         $update = categoryMovies::where('id', $k->id)
-            //             ->update([
-            //                 'movie_id' => $k->movie_id,
-            //                 'category_id' => $k->category_id,
-            //                 'api_update' => $k->api_update
-            //                 // 'api_update' => $k->version
-            //             ]);
-            //     // }
-            // }
-            // else // ไม่มีหนัง
-            // {
-                // $movie = new categoryMovies;
-                // $movie->id = $k->id;
-                // $movie->movie_id = $k->movie_id;
-                // $movie->category_id = $k->category_id;
-                // $movie->api_update = 1;
-                // $movie->save();
-            // }
-
-            // echo "<a href='".url('/')."/".$k->image."'>".$k->id."</a><br>";
         }
 
         echo "SUCCESS | UPDATE";
