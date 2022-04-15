@@ -12,9 +12,9 @@
                 </div>
                 <div class="col-lg-15 col-20 text-white">
                     <h1 class="movie-title text-warning">{{ trim($seo->front_seo) }} {{ $movie->title }}</h1>
-                    <i class="fa fa-calendar text-white" aria-hidden="true"></i> @if($movie->year != "") <a href="{{ route('year',['id' => $movie->year]) }}">{{ $movie->year }}</a> @else - @endif
+                    <i class="fa fa-calendar text-white" aria-hidden="true"></i> @if($movie->year != "") <a class="badge badge-dark" href="{{ route('year',['id' => $movie->year]) }}">หนังปี {{ $movie->year }}</a> @else - @endif
                     <br>
-                    <b style="color: white">IMDB</b> <b class="text-white">{{ $movie->score }}</b>
+                    <b style="color: white">IMDB</b> <b class="text-white badge badge-dark">{{ $movie->score }}</b>
                     <br>
                     <b class="text-white">Director:</b> {{ $movie->director != "" ? $movie->director : "-" }}
                     <br class="my-4">
@@ -32,7 +32,7 @@
                         -
                     @endif
                     <hr>
-                    <p class="text-white">เรื่องย่อ</p>
+                    <p class="text-white badge badge-secondary">เรื่องย่อ</p>
                     <p class="text-white" id="description" style="display: -webkit-box;
                     -webkit-line-clamp: 4;
                     -webkit-box-orient: vertical;  
@@ -66,7 +66,7 @@
 
         
         @if($movie->type == "movie")
-        <div class="card">
+        <div class="card" style="background: {{ option_get('content_bg_color') }}">
             <div class="card-header">
                 ตัวเล่นหลัก 
                 @if(env('STREAMING_TYPE', 'proxy') == "streaming")
@@ -182,6 +182,7 @@
             </div>
         </div>
         @endif
+        @include('template.share')
         <div id="fb-root"></div>
         <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/th_TH/sdk.js#xfbml=1&version=v11.0&appId=191119298119968&autoLogAppEvents=1"
@@ -212,8 +213,8 @@
             speed: 100,
             collapsedHeight: 20,
             heightMargin: 16,
-            moreLink: '<a href="#" >แสดงเพิ่ม</a>',
-            lessLink: '<a href="#" >แสดงน้อย</a>',
+            moreLink: '<a href="#" class="badge badge-light" >แสดงเพิ่ม</a>',
+            lessLink: '<a href="#" class="badge badge-light">แสดงน้อย</a>',
             embedCSS: true,
             blockCSS: 'display: block; width: 100%;',
             startOpen: false,
@@ -231,36 +232,5 @@
         background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)) 0% 0% / cover, url({{ asset($movie->image) }}) no-repeat center center;
         background-size: cover;
         padding: 20px;
-    }
-
-    ) no-repeat center center;
-    background-size: cover;
-    padding: 20px;
-    }
-
-    .trailer {
-        width: 100%;
-        height: 350px;
-    }
-
-    .movie-title {
-        /* color: #ffc107; */
-        line-height: 36px;
-        padding: 0px 0;
-        margin-bottom: 0;
-        max-height: none;
-        font-weight: 300;
-        font-size: 1.875rem;
-    }
-
-    .movie-description {
-        font-size: 0.95rem;
-
-    }
-
-    @media screen and (max-width: 480px) {
-        .trailer {
-            height: 200px;
-        }
     }
 </style>

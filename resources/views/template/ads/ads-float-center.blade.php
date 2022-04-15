@@ -33,9 +33,9 @@
                     @elseif($k->type == 0)
                         <a href="{{ route('ads_redirect', ['id' => $k->id]) }}" target="_blank">
                         @if(strrpos($k->image_ads , 'http') === false)
-                            <img src="{{ asset($k->image_ads) }}" alt="banner" class="img-fluid">
+                            <img src="{{ asset($k->image_ads) }}" alt="{{ $k->title_ads }}" class="img-fluid">
                         @else
-                            <img src="{{ $k->image_ads }}" alt="banner" class="img-fluid">
+                            <img src="{{ $k->image_ads }}" alt="{{ $k->title_ads }}" class="img-fluid">
                         @endif
                     @endif
                 </a>

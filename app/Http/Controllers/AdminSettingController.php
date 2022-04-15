@@ -16,20 +16,26 @@ class AdminSettingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+    
      public function Main()
      {
          $data['infosetting'] = Setting::first();
          return $data;
      }
 
-    public function index()
+    public function index(Request $req)
     {
         if(!Auth::check())
         {
             return redirect()->route('admin.login');
         }
         $data = $this->Main();
-        $data['header_title'] = "ตั้งค่าเว็บ";
+        $data['header_title'] = "Setting - ".strtoupper($req->type);
         $data['request'] = Setting::find(1);
 
         return view('admin.page.setting.setting', $data);
@@ -91,7 +97,9 @@ class AdminSettingController extends Controller
         {
             return redirect()->back();
         }
+
         
+    
         // /** Check Domain IAMTHEME **/
         // $checkDomain = new Client;
         // $res = $checkDomain->request('GET', $url, ['http_errors' => false]);
@@ -105,7 +113,7 @@ class AdminSettingController extends Controller
             $data->header = $request->header;
             $data->footer = $request->footer;
             $data->imdb = 1;
-            $data->facebook = $request->facebook;
+            // $data->facebook = $request->facebook;
             // Time Skip
             $data->time_skip = $request->time_skip;
             // $data->facebook_login = $request->facebook_login;
@@ -171,7 +179,7 @@ class AdminSettingController extends Controller
             $data->update();
 
             session()->flash('message', 'อัพเดทสำเร็จ');
-            return redirect()->route('admin.setting');
+            return redirect(route('admin.setting')."?type="."general");
 
 
     }

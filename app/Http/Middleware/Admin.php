@@ -19,6 +19,7 @@ class Admin
         if (Auth::user() &&  Auth::user()->admin == 1) {
            return $next($request);
         }
-        return redirect('/');
+
+        return abort(403);
     }
 }

@@ -4,48 +4,21 @@ if(!session()->has('locale')){
 }
 App::setLocale(session('locale'));
 @endphp
-{{-- <div class="row">
-    <div class="col-lg-20">
-        <div class="title-hd" style="margin-top: 10px;background-color: rgba(255,255,255,0.4);padding: 10px 20px">
-            <h3 style="color:#fff"><i class="fas fa-newspaper"></i> ข่าวสารทั้งหมด</h3>
-        </div>
-        <div style="padding: 10px 20px">
-            <div class="row">
-                @foreach ($news as $key_news)
-                    <div class="col-lg-6 col-md-6 col-xs-6">
-                        <div class="movie-item" style="margin-top: 10px">
-                            <a href="{{ route('article', ['id' => $key_news->id]) }}">
-                                <div class="mv-img">
-                                    <img src="{{ asset($key_news->image) }}" alt="" style="width: 100%;height:200px">
-                                </div>
-                                <div class="title-in">
-                                    <div class="cate">
-                                        @php
-                                            $date = Carbon\Carbon::parse($key_news->created_at, 'UTC');
-                                        @endphp
-                                        <span class="orange">ข่าวสาร</span> <span class="blue">{{ $date->format('M d Y') }}</span>
-                                    </div>
-                                    <h6 style="color: #fff">{{ $key_news->title }}</h6>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
-                <div class="col-lg-12 col-md-12 col-xs-12">
-                    {{ $news->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 <div class="row">
-    <div class="col-lg-20 col-20 my-4">
-        <h1 class="title-header text-dark">บทความ</h1>
+    <div class="col-lg-16 col-10 my-auto">
+        <p class="title-header text-dark">บทความ</p>
     </div>
+    @if(isset($show_all))
+    <div class="col-lg-4 col-10  text-right my-auto">
+        <a href="{{ route('article.all') }}" class="badge badge-light">ทั้งหมด</a>
+    </div>
+    @endif
+</div>
+<div class="row">
     @foreach($news as $k)
     <div class="col-lg-5 col-md-5 col-10 my-3">
-        <a href="{{ route('article', ['title' => $k->slug_title]) }}" class="item-movie">
+        <a href="{{ option_get('article_type') == "title" || option_get('article_type') == false ? route('article', ['title' => $k->slug_title]) : route('article', ['title' => $k->id]) }}" class="item-movie">
             <img src="{{ asset($k->image) }}" alt="{{ $k->title }}" class="item-poster img-fluid">
             <h3 class="title-poster text-dark mt-2">{{ $k->title }}</h3>
         </a>

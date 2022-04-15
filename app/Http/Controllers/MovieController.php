@@ -27,6 +27,7 @@ use Crypt;
 use App\Seo;
 use Redirect;
 use App\Article;
+use App\Option;
 
 // Scaping
 use GuzzleHttp\Client as GuzzleClient;
@@ -53,7 +54,7 @@ class MovieController extends Controller
 
   public function Main()
   {
-
+    $check_table = new checkTable();
     $data['setting'] = Setting::find(1);
     $data['seo'] = Seo::first();
     $data['category_type'] = genre::where([['type_category', 'type']])
@@ -222,6 +223,7 @@ class MovieController extends Controller
     }
     $data['keywords'] = $data['setting']->keyword;
     $data['description'] = $data['setting']->description;
+    $data['news'] = Article::orderBy('updated_at', 'desc')->paginate(12);
 
     $data['movie'] = movie::orderBy('updated_at', 'desc')
       ->select('id', 'title', 'slug_title', 'sound', 'image', 'imdb', 'resolution', 'type', 'movie_hot', 'score', 'updated_at')
@@ -249,7 +251,15 @@ class MovieController extends Controller
   {
     $data = $this->Main(); // Main มาใช้
 
-    $data['news'] = Article::where('slug_title', $title)->firstOrFail();
+    if(option_get('article_type') == "title" || option_get('article_type') == false)
+    {
+      $data['news'] = Article::where('slug_title', $title)->firstOrFail();
+    }
+    else 
+    {
+      $data['news'] = Article::where('id', $title)->firstOrFail();
+    }
+    
     $data['news']->view = $data['news']->view + 1;
     $data['news']->timestamps = false;
     $data['news']->save();
@@ -399,15 +409,34 @@ class MovieController extends Controller
   public function get_cloudstream($url, $includ_env = false)
   {
     $video_url = $url;
-    if ($includ_env) {
-      // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."/playlist.m3u8";
-      $check_http = strpos($url, "ssd/");
-      if ($check_http === false) {
-        // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."";
-        $video_url = base64_decode(env('STREAMING_ID_URL', '')) . $url . "/playlist.m3u8";
-      } else {
-        // $video_url = base64_decode(env('STREAMING_ID_URL_SSD', '')).$url."";
-        $video_url = base64_decode(env('STREAMING_ID_URL_SSD', '')) . $url . "/playlist.m3u8";
+
+    if (Schema::hasColumn('settings', 'streaming_1'))
+    {
+      $get_routes = Setting::first();
+      if ($includ_env) {
+          // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."/playlist.m3u8";
+          $check_http = strpos($url, "ssd/");
+          if ($check_http === false) {
+            // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."";
+            $video_url = $get_routes->streaming_2. $url . "/playlist.m3u8";
+          } else {
+            // $video_url = base64_decode(env('STREAMING_ID_URL_SSD', '')).$url."";
+            $video_url = $get_routes->streaming_1 . $url . "/playlist.m3u8";
+          }
+      }
+    }
+    else
+    {
+      if ($includ_env) {
+          // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."/playlist.m3u8";
+          $check_http = strpos($url, "ssd/");
+          if ($check_http === false) {
+            // $video_url = base64_decode(env('STREAMING_ID_URL', '')).$url."";
+            $video_url = base64_decode(env('STREAMING_ID_URL', '')) . $url . "/playlist.m3u8";
+          } else {
+            // $video_url = base64_decode(env('STREAMING_ID_URL_SSD', '')).$url."";
+            $video_url = base64_decode(env('STREAMING_ID_URL_SSD', '')) . $url . "/playlist.m3u8";
+          }
       }
     }
 
@@ -456,7 +485,16 @@ class MovieController extends Controller
   {
     $data = $this->Main(); // Main มาใช้
 
-    $data['movie'] = movie::where('slug_title', $title)->firstOrFail(); // ค้นหาหนัง
+    if(option_get('movie_type') == "title" || option_get('movie_type') == false)
+    {
+      $data['movie'] = movie::where('slug_title', $title)->firstOrFail(); // ค้นหาหนัง
+    }
+    else 
+    {
+      $data['movie'] = movie::where('id', $title)->firstOrFail(); // ค้นหาหนัง
+    }
+
+
     $data['movie']->view = $data['movie']->view + 1;
     $data['movie']->timestamps = false;
     $data['movie']->update();
@@ -580,6 +618,7 @@ class MovieController extends Controller
     if (!$data['category_select']) {
       $data['category_select'] = genre::where('title_category_eng', str_replace('-', ' ', $title))->firstOrFail();
     }
+
 
     if ($request->page) {
       $data['title'] = $data['category_select']->title_category_eng . " - " . $data['category_select']->title_category . " หน้า " . $request->page . " - " . $data['setting']->title;

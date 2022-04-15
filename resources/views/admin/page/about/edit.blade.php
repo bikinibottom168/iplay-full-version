@@ -42,6 +42,15 @@
                                             <input type="text" name="url_select" class="form-control" id="exampleFormControlInput1" placeholder="ใส่ URL" value="{{ $request->type == "2" ? $request->description : "" }}">
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <label for="exampleFormControlInput1">SEO dofollow | nofollow</label>
+                                            <select name="rel" class="form-control">
+                                                <option value="1" {{ $request->rel == "1" ? "selected" : "" }}>dofollow</option>
+                                                <option value="0" {{ $request->rel == "0" ? "selected" : "" }}>nofollow</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <script>
                                         $(document).ready(function() {
                                             $("input[name='customRadioInline1']").change(function(){

@@ -15,6 +15,11 @@ class AdminMemberController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
      public function Main()
      {
          $data['infosetting'] = Setting::first();

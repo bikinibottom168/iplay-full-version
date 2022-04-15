@@ -16,17 +16,6 @@
 </div>
 <style>
     a.list-button-category {
-        border-radius: 20px;
-        padding: 6px 12px;
-        color:  #fff;
         background-color: {{ env('SCRIPT_PRIMARY_COLOR', '') }};
-        text-decoration: none;
-        transition: 0.3s;
-        width: 3rem;
-        height: 3rem;
-        line-height: 3rem;
-    }
-    a.list-button-category:hover {
-        opacity: 0.5;
     }
 </style>

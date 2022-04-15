@@ -18,25 +18,32 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Title</th>
-                                <th>View</th>
-                                <th>แก้ไข/ลบ</th>
+                                <th>ชื่อ</th>
+                                <th>วิว</th>
+                                <th>วันที่</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($request as $k)
                                 <tr>
                                     <td>{{ $k->id }}</td>
-                                    <td><a href="{{ route('article', ['title' => $k->slug_title]) }}" target="_blank">{{ $k->title }}</a></td>
-                                    <th>{{ number_format($k->view) }}</th>
                                     <td>
-                                        <form action="{{ route('admin.article.destroy', ['id'=> $k->id]) }}" method="POST">
+                                        <a href="{{ route('article', ['title' => $k->slug_title]) }}" target="_blank">{{ $k->title }}</a>
+                                        <br>
+                                        <br>
+                                        <a href="{{ route('admin.article.edit', ['id'=> $k->id]) }}" class="text-warning" style="cursor: pointer">แก้ไข</a> |
+                                        <b class="text-danger" style="cursor: pointer" onclick="event.preventDefault(); document.getElementById('article-{{ $k->id }}').submit();">ลบ</b>
+                                        <form action="{{ route('admin.article.destroy', ['id'=> $k->id]) }}" id="article-{{ $k->id }}" method="POST">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down" style="width: 50%" onclick="return confirm('ยืนยันลบข้อมูล')">ลบ</button>
                                         </form>
-                                        <a href="{{ route('admin.article.edit', ['id'=> $k->id]) }}" class="btn waves-effect waves-light btn-info pull-right hidden-sm-down" style="width: 50%">แก้ไข</a>
                                     </td>
+                                    <th>{{ number_format($k->view) }}</th>
+                                    <th>
+                                        {{ $k->created_at->format('d/m/Y') }}
+                                        <br>
+                                        <p class="badge badge-success">เผยแพร่</p>
+                                    </th>
                                 </tr>
                             @endforeach
                         </tbody>

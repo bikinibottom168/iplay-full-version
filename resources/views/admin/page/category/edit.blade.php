@@ -37,6 +37,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <div class="col-md-6 col-sm-3">
+                                            <label>คำอธิบายหมวดหมู่</label>
+                                            <textarea type="text" name="description" placeholder="description" class="form-control form-control-line">{{ $request->description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <div class="col-sm-12">
                                             <button class="btn btn-success btn-lg" type="submit">แก้ไขหมวดหมู่</button>
                                         </div>

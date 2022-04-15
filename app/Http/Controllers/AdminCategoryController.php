@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use App\genre as category;
 use App\Setting;
 use Auth;
@@ -14,6 +15,11 @@ class AdminCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
      public function Main()
      {
@@ -27,6 +33,12 @@ class AdminCategoryController extends Controller
         if(!Auth::check())
         {
             return redirect()->route('admin.login');
+        }
+
+        if (!Schema::hasColumn('genres', 'description')) {
+            Schema::table('genres', function($table){
+                $table->text('description')->nullable();
+            });
         }
 
         $data = $this->Main();
@@ -72,6 +84,7 @@ class AdminCategoryController extends Controller
         }
 
         $data = new category;
+        $data->description = $request->description;
         $data->title_category = $request->title_category;
         $data->title_category_eng = $request->title_category_eng;
         $data->split = $request->split;
@@ -132,6 +145,7 @@ class AdminCategoryController extends Controller
         }
 
         $data = category::find($id);
+        $data->description = $request->description;
         $data->timestamps = false;
         $data->title_category = $request->title_category;
         $data->title_category_eng = $request->title_category_eng;

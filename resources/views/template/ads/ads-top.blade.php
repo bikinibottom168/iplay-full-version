@@ -1,12 +1,13 @@
 @php 
-if(env('SCRIPT_ADS_TOP_LEFT_RIGHT', '0') == "1")
+if(option_get('banner_setting') == "1")
 {
-    $col = "col-lg-14 col-md-12 col-12";
+    $col = "col-lg-14 col-md-14 col-14";
 }
-else
+elseif(option_get('banner_setting') == "2" || option_get('banner_setting') == false)
 {
-    $col = "col-lg-10 col-md-10 col-10 mb-1";
+    $col = "col-lg-7 col-md-7 col-8";
 }
+
 
 @endphp
 
@@ -20,9 +21,9 @@ else
         @endif
             <a href="{{ route('ads_redirect', ['id' => $k->id]) }}" target="_blank">
             @if(strrpos($k->image_ads , 'http') === false)
-                <img src="{{ asset($k->image_ads) }}" alt="banner" class="img-fluid">
+                <img src="{{ asset($k->image_ads) }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @else
-                <img src="{{ $k->image_ads }}" alt="banner" class="img-fluid">
+                <img src="{{ $k->image_ads }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @endif
             </a>
     @endforeach
@@ -40,14 +41,21 @@ else
         @elseif($k->type == 0)
             <a href="{{ route('ads_redirect', ['id' => $k->id]) }}" target="_blank">
             @if(strrpos($k->image_ads , 'http') === false)
-                <img src="{{ asset($k->image_ads) }}" alt="banner" class="img-fluid">
+                <img src="{{ asset($k->image_ads) }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @else
-                <img src="{{ $k->image_ads }}" alt="banner" class="img-fluid">
+                <img src="{{ $k->image_ads }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @endif
             </a>
         @endif
     </div>
 @endforeach
+
+@if(count($ads_a) == 1 && option_get('banner_setting') == "2" || option_get('banner_setting'))
+<div class="{{ $col }} text-center">
+{{-- Blank --}}
+</div>
+@endif
+
 @if(env('SCRIPT_ADS_TOP_LEFT_RIGHT', '0') == "1")
 <div class="col-lg-3 col-md-4 col-4 text-right mb-5">
     @foreach($ads_r1 as $k)
@@ -58,9 +66,9 @@ else
         @endif
             <a href="{{ route('ads_redirect', ['id' => $k->id]) }}" target="_blank">
             @if(strrpos($k->image_ads , 'http') === false)
-                <img src="{{ asset($k->image_ads) }}" alt="banner" class="img-fluid">
+                <img src="{{ asset($k->image_ads) }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @else
-                <img src="{{ $k->image_ads }}" alt="banner" class="img-fluid">
+                <img src="{{ $k->image_ads }}" alt="{{ $k->title_ads }}" class="img-fluid">
             @endif
             </a>
             

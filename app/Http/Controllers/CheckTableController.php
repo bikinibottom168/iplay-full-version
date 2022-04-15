@@ -11,6 +11,18 @@ class CheckTableController extends Controller
 
     public function __construct() 
     {
+
+        if (!Schema::hasTable('options'))
+        {
+            Schema::create('options', function(Blueprint $table)
+            {
+                $table->increments('id');
+                $table->timestamps();
+                $table->string('key');
+                $table->text('value')->nullable();
+            });
+        }
+
         if (!Schema::hasColumn('movies','movie_hot'))
         {
             Schema::table('movies', function($table)

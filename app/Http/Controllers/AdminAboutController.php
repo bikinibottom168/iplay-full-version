@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use App\About as about;
 use App\Setting;
 use App\genre;
 use Auth;
+
 
 class AdminAboutController extends Controller
 {
@@ -15,6 +18,11 @@ class AdminAboutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
      public function Main()
      {
@@ -27,6 +35,13 @@ class AdminAboutController extends Controller
         if(!Auth::check())
         {
             return redirect()->route('admin.login');
+        }
+
+        if (!Schema::hasColumn('abouts', 'rel')) {
+            Schema::table('abouts', function($table)
+            {
+                $table->integer('rel')->default(0);
+            });
         }
 
         $data = $this->Main();
@@ -57,6 +72,7 @@ class AdminAboutController extends Controller
      */
     public function store(Request $request)
     {
+        
         if(env("DEMO",'0') == "1")
         {
             return redirect()->back();
@@ -64,6 +80,7 @@ class AdminAboutController extends Controller
 
         $data = new about;
         $data->title = $request->title;
+        $data->rel = $request->rel;
         $data->type = $request->customRadioInline1; // Radio Type
         if($data->type == "1")
         {
@@ -123,6 +140,7 @@ class AdminAboutController extends Controller
 
         $data = about::find($id);
         $data->title = $request->title;
+        $data->rel = $request->rel;
         $data->type = $request->customRadioInline1; // Radio Type
         if($data->type == "1")
         {

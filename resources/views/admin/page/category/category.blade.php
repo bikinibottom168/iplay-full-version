@@ -19,7 +19,8 @@
                                 <th>#</th>
                                 {{-- <th>รูปแบบ</th> --}}
                                 <th>ชื่อ</th>
-                                <th>แก้ไข/ลบ</th>
+                                <th>แก้ไข</th>
+                                <th>ลบ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,12 +30,14 @@
                                     {{-- <td>{{ $k->type_category == 'type' ? 'ประเภท' : 'หมวดหมู่' }}</td> --}}
                                     <td>{{ $k->title_category_eng }} {{ $k->title_category }}</td>
                                     <td>
+                                        <a href="{{ route('admin.category.edit', ['id'=> $k->id]) }}" class="btn waves-effect waves-light btn-warning pull-right hidden-sm-down btn-block" >แก้ไข</a>
+                                    </td>
+                                    <td>
                                         <form action="{{ route('admin.category.destroy', ['id'=> $k->id]) }}" method="POST">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down" style="width: 50%" onclick="return confirm('ยืนยันลบข้อมูล')">ลบ</button>
+                                            <button type="submit" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down btn-block" onclick="return confirm('ยืนยันลบข้อมูล')">ลบ</button>
                                         </form>
-                                        <a href="{{ route('admin.category.edit', ['id'=> $k->id]) }}" class="btn waves-effect waves-light btn-info pull-right hidden-sm-down" style="width: 50%">แก้ไข</a>
                                     </td>
                                 </tr>
                             @endforeach

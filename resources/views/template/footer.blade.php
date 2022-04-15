@@ -1,5 +1,8 @@
-<div class="container border-radius-1 my-5" style="background-color: {{ env('SCRIPT_PRIMARY_COLOR', '') }};">
+<div class="container border-radius-1 my-5" style="background-color: {{ env('SCRIPT_PRIMARY_COLOR', '') }};background: {!! option_get('footer_color') !!}">
     <footer class="row py-2 px-2">
+        <div class="col-lg-20">
+            {{ $setting->footer }}
+        </div>
         <div class="col-lg-10 col-20">
             <img src="{{ asset($setting->logo) }}" alt="" width="80px">
             <ul style="list-style: none;display: inline">

@@ -15,9 +15,5 @@
             background: url({{ asset('images/icon-star.png') }}) no-repeat 0;
             background-size: 11px 11px;
         }
-
-        .movie-fullhd {
-            background-color: #F2AE3E;
-        }
 </style>
 

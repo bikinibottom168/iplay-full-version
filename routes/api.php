@@ -35,3 +35,4 @@ Route::get('v1/moviecontact/{movieid}/', 'ApiController@moviecontact');
 Route::get('v1/collector/{id}/{movie}/{type}', 'ApiController@collector');
 
 Route::get('v1/loadmovie/{id?}/{ep?}/{player?}', 'ApiController@loadmovie');
+

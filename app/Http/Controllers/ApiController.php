@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use App\movie;
 use GuzzleHttp\Client;
+use App\genre;
 use App\Collection;
 use App\Request as req;
 use App\Setting;
@@ -236,28 +238,60 @@ class ApiController extends Controller
     // #################################
     // API UPDATE SEO
     // ##################################
-    public function seo(Request $request)
+    public function seo($key,Request $request)
     {
+
         $update_last = Setting::first();
-
-        // $domain = "http://localhost:8000/";
-        if(env('SCRIPT_TYPE', 'movie') == "movie")
-        {
-            $domain = "https://api.vip-streaming.com/";
-        }
-        elseif(env('SCRIPT_TYPE', 'movie') == "av")
-        {
-            $domain = "https://av.iamtheme.com/";
-        }
-        elseif(env('SCRIPT_TYPE', 'movie') == "anime" || env('SCRIPT_TYPE', 'movie') == "series")
-        {
-            $domain = "https://anime.iamtheme.com/";
-        }
-
-
         $client = new Client;
-        $response = $client->request('GET', $domain."api/v2/movie/seo?key=$request->key&page=$update_last->last_seo",['http_errors' => false]);
+
+        $domain = "https://client.iamtheme.com/";
+        // CATEGOTY CHECK
+        $category_all = genre::get();
+        if(count($category_all) == 0)
+        {
+            $response = $client->request('GET', $domain."api/v1/category/$request->key",['http_errors' => false]);
+            $get = json_decode($response->getBody());
+
+            foreach($get->data as $item)
+            {
+                $add_category = new genre;
+                $add_category->id = $item->id;
+                $add_category->title_category = $item->title_category;
+                $add_category->title_category_eng = $item->title_category_eng;
+                $add_category->type_category = $item->type_category;
+                $add_category->no = $item->no;
+                $add_category->split = $item->split;
+                $add_category->save();
+            }
+        }
+
+
+        $domain = "https://client.iamtheme.com/";
+
+        if (!Schema::hasColumn('settings', 'streaming_1'))
+        {
+            $response = $client->request('GET', $domain."api/v1/info/$request->key",['http_errors' => false]);
+            $get = json_decode($response->getBody(), true);
+
+
+            Schema::table('settings', function ($table)
+            {
+                $table->text("streaming_1")->nullable();
+                $table->text("streaming_2")->nullable();
+            });
+
+  
+            $routes = unserialize($get['data']['routes']['option_value']);
+            $update_last = Setting::first();
+            $update_last->streaming_1 = trim($routes['0']);
+            $update_last->streaming_2 = trim($routes['1']);
+            $update_last->save();
+        }
+
+        $response = $client->request('GET', $domain."api/v1/data/$request->key?page=$update_last->last_seo",['http_errors' => false]);
         $get = json_decode($response->getBody());
+    
+
         foreach($get->data as $k)
         {
             $check = Movie::where('id', $k->id);

@@ -1,69 +1,86 @@
-
- 
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
-    <meta name="author" content="Creative Tim">
-    <title>Admin Dashboard</title>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Icons -->
-    {!! Html::style('admin/vendor/nucleo/css/nucleo.css') !!}
-    {!! Html::style('admin/vendor/@fortawesome/fontawesome-free/css/all.min.css') !!}
-    {!! Html::style('admin/argon.min.css') !!}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="{{asset('admin/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+
+    <link href="{{asset('admin/assets/css/main.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('admin/assets/css/authentication/form-2.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/forms/theme-checkbox-radio.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/forms/switches.css')}}">
+    <style>
+        .form-form .form-form-wrap form .field-wrapper svg.feather-eye {
+            top: 46px;
+        }
+    </style>
+
+    {!! NoCaptcha::renderJs() !!}
 </head>
 
 <body>
-    <div class="row justify-content-md-center">
-        <div class="col-lg-4">
-            <div class="login-main">
-                <h3 style="margin-bottom: 20px">สมาชิกเข้าสู่ระบบ</h3>
-                <form class="" action="{{ route('login') }}" method="post">
-                    {{ csrf_field() }}
-                    @if(session()->has('message_login'))
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                           <strong style="text-align: left">Username หรือ Password ผิดพลาด</strong>
-                        </div>
-                    @endif
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" name="email" class="form-control" placeholder="อีเมล์" id="username" value="{{ old('email') }}" required autofocus>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif
-                            <input type="password" id="password" name="password" class="form-control" placeholder="รหัสผ่าน" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-block btn-primary my-4" >
-                            เข้าสู่ระบบ
-                        </button>
-                    </div>
-                </form>
+    <div class="form-container outer">
+        <div class="form-form">
+            <div class="form-form-wrap">
+                <div class="form-container">
+                    <div class="form-content">
+
+                        <h1 class="">Sign In</h1>
+                        <p class="">Log in to Admin Dashboard</p>
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="help-block">
+                                <strong class="text-danger">โปรดยืนยัน reCAPTCHA</strong>
+                            </span>
+                        @endif
+                        <form method="POST" action="{{ route('login') }}" class="text-left">
+
+                            @csrf
+
+                            <div class="form">
+
+                                <div id="username-field" class="field-wrapper input">
+                                    <label for="username">Adminstation</label>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <input id="email" type="text" placeholder="Staff" class="form-control " name="email" required autocomplete="email" autofocus>
+                                    
+                                </div>
+
+                                <div id="password-field" class="field-wrapper input mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="password">PASSWORD</label>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    <input id="password" name="password" type="password" placeholder="Password"  class="form-control " name="password" required autocomplete="current-password">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </div>
+                                <div class="d-sm-flex justify-content-between">
+                                    <div class="field-wrapper">
+                                        <button type="submit" class="btn btn-primary" value="">{{ __('Login') }}</button>
+                                    </div>
+                                </div>
+                                <br>
+                                @if(option_get('recaptcha.status') == "1")
+                                <div class="d-sm-flex justify-content-between">
+                                    {!! NoCaptcha::display() !!}
+                                </div>
+                                @endif
+                            </div>
+                        </form>
+
+                    </div>                    
+                </div>
             </div>
         </div>
     </div>
-    {!! Html::script('admin/vendor/jquery/dist/jquery.min.js') !!}
-    {!! Html::script('admin/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') !!}
-    {!! Html::script('admin/vendor/js-cookie/js.cookie.js') !!}
-    {!! Html::script('admin/vendor/jquery.scrollbar/jquery.scrollbar.min.js') !!}
-    {!! Html::script('admin/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') !!}
-    {!! Html::script('admin/vendor/chart.js/dist/Chart.min.js') !!}
-    {!! Html::script('admin/vendor/chart.js/dist/Chart.extension.js') !!}
-    {!! Html::script('admin/argon.min.js') !!}
+    
+    <script src="{{asset('admin/assets/js/libs/jquery-3.1.1.min.js')}}"></script>
+    <script src="{{asset('admin/bootstrap/js/popper.min.js')}}"></script>
+    <script src="{{asset('admin/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('admin/assets/js/authentication/form-2.js')}}"></script>
 </body>
 
 </html>

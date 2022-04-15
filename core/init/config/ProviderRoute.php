@@ -20,15 +20,15 @@ use Illuminate\Support\Facades\Route;
  *  #List XML
  *  - Index Show Category XML (post, category_movie, tag)
  */
-Route::get('/av/get', 'MovieController@avGet')->name('av.get');
-Route::post('/av/get', 'MovieController@avPost')->name('av.post');
+// Route::get('/av/get', 'MovieController@avGet')->name('av.get');
+// Route::post('/av/get', 'MovieController@avPost')->name('av.post');
 
 // -----------------------------
 //      Install ติดตั้ง
 // -----------------------------
-Route::get('/install', 'InstallController@index')->name('install');
-Route::post('/install', 'InstallController@store')->name('install.submit');
-Route::get('/support', 'InstallController@index')->name('support');
+// Route::get('/install', 'InstallController@index')->name('install');
+// Route::post('/install', 'InstallController@store')->name('install.submit');
+// Route::get('/support', 'InstallController@index')->name('support');
 
 
 Route::get('/robots.txt', 'SitemapController@robots_txt')->name('sitemap.txt');
@@ -75,7 +75,7 @@ Route::get('/ads/redirect/{id}', 'MovieController@ads_redirect')->name('ads_redi
 Route::get('/ads/overlay.xml', 'MovieController@overlay')->name('overlay');
 
 //  Movie แสดงหนังทั้งหมด
-Route::get('movies', 'MovieController@movies')->name('movies');
+Route::middleware('page-cache')->get('movies', 'MovieController@movies')->name('movies');
 //  Letters A-Z
 Route::get('letters/{letters?}', 'MovieController@letters')->where('letters', '[A-Z]+')->name('letters');
 Route::get('letters/0-9', 'MovieController@letters_number')->name('letters_number');
@@ -90,13 +90,26 @@ Route::get('/articles/all', 'MovieController@news_all')->name('article.all');
 
 
 
-Route::get('/admin/login', 'Auth\LoginController@showLoginForm')->name('admin.login');
+Route::middleware('recaptcha')->get('/admin/login', 'Auth\LoginController@showLoginForm')->name('admin.login');
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::prefix('dashboard')->group(function () {
         Route::get('/', 'AdminController@index')->name('admin.home');
         Route::get('help', 'AdminController@help')->name('admin.help');
+
+        // -----------------------------
+        //      IAMMOVIE Resource
+        // -----------------------------
+        Route::resource('iamovie', 'AdminIammovieController', ['names' => [
+            'index' => 'admin.iammovie',
+            'create' => 'admin.iammovie.create',
+            'store' => 'admin.iammovie.store',
+            'show' => 'admin.iammovie.show',
+            'edit' => 'admin.iammovie.edit',
+            'update' => 'admin.iammovie.update',
+            'destroy' => 'admin.iammovie.destroy'
+        ]]);
 
         // -----------------------------
         //      AdminMovie Resource
@@ -195,6 +208,29 @@ Route::group(['middleware' => 'web'], function () {
             'destroy' => 'admin.member.destroy'
         ]]);
 
+
+        // -----------------------------
+        //     Media Resource
+        // -----------------------------
+        Route::resource('media', 'AdminMediaController', ['names' => [
+            'index' => 'admin.media'
+        ]]);
+
+
+        // -----------------------------
+        //     Seo Resource
+        // -----------------------------
+        Route::resource('themesetting', 'AdminThemeController', ['names' => [
+            'index' => 'admin.themesetting',
+            'create' => 'admin.themesetting.create',
+            'store' => 'admin.themesetting.store',
+            'show' => 'admin.themesetting.show',
+            'edit' => 'admin.themesetting.edit',
+            'update' => 'admin.themesetting.update',
+            'destroy' => 'admin.themesetting.destroy'
+        ]]);
+        
+
         // -----------------------------
         //      Setting Resource
         // -----------------------------
@@ -209,7 +245,7 @@ Route::group(['middleware' => 'web'], function () {
         ]]);
 
         // -----------------------------
-        //      Setting Resource
+        //     Seo Resource
         // -----------------------------
         Route::resource('seo', 'AdminSeoController', ['names' => [
             'index' => 'admin.seo',
@@ -222,17 +258,43 @@ Route::group(['middleware' => 'web'], function () {
         ]]);
 
         // -----------------------------
-        //      Setting Resource
+        //     Seo Resource
         // -----------------------------
-        Route::resource('settingindex', 'AdminSettingindexController', ['names' => [
-            'index' => 'admin.setting.index',
-            'create' => 'admin.setting.index.create',
-            'store' => 'admin.setting.index.store',
-            'show' => 'admin.setting.index.show',
-            'edit' => 'admin.setting.index.edit',
-            'update' => 'admin.setting.index.update',
-            'destroy' => 'admin.setting.index.destroy'
+        Route::resource('seo', 'AdminSeoController', ['names' => [
+            'index' => 'admin.seo',
+            'create' => 'admin.seo.create',
+            'store' => 'admin.seo.store',
+            'show' => 'admin.seo.show',
+            'edit' => 'admin.seo.edit',
+            'update' => 'admin.seo.update',
+            'destroy' => 'admin.seo.destroy'
         ]]);
+
+        // -----------------------------
+        //     Seo Resource
+        // -----------------------------
+        Route::resource('security', 'AdminSecurityController', ['names' => [
+            'index' => 'admin.security',
+            'create' => 'admin.security.create',
+            'store' => 'admin.security.store',
+            'show' => 'admin.security.show',
+            'edit' => 'admin.security.edit',
+            'update' => 'admin.security.update',
+            'destroy' => 'admin.security.destroy'
+        ]]);
+
+        // -----------------------------
+        //      Settingindex Resource
+        // // -----------------------------
+        // Route::resource('settingindex', 'AdminSettingindexController', ['names' => [
+        //     'index' => 'admin.setting.index',
+        //     'create' => 'admin.setting.index.create',
+        //     'store' => 'admin.setting.index.store',
+        //     'show' => 'admin.setting.index.show',
+        //     'edit' => 'admin.setting.index.edit',
+        //     'update' => 'admin.setting.index.update',
+        //     'destroy' => 'admin.setting.index.destroy'
+        // ]]);
 
         // -----------------------------
         //      Banner Resource

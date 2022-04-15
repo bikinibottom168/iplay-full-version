@@ -16,9 +16,9 @@ use App\Http\Controllers\CheckTableController as checkTable;
 
 class AdminMovieController extends Controller
 {
-
     public function __construct()
     {
+        $this->middleware('admin');
         $check = new checkTable;
     }
 
@@ -55,6 +55,16 @@ class AdminMovieController extends Controller
         $data = $this->Main();
         $data['header_title'] = "จัดการหนัง - หนังทั้งหมด";
         $data['movie'] = movie::where('type', 'movie')->orderBy('updated_at','desc')->paginate(10);
+        $data['page'] = 'movies';
+
+        return view('admin.page.movie.movie', $data);
+    }
+
+    public function series()
+    {
+        $data = $this->Main();
+        $data['header_title'] = "จัดการซีรี่ย์";
+        $data['movie'] = movie::where('type', 'series')->orderBy('updated_at','desc')->paginate(10);
         $data['page'] = 'movies';
 
         return view('admin.page.movie.movie', $data);

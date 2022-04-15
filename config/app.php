@@ -166,6 +166,13 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Jorenvh\Share\Providers\ShareServiceProvider::class,
+        Silber\PageCache\LaravelServiceProvider::class,
+        Way\Generators\GeneratorsServiceProvider::class,
+        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,7 +241,12 @@ return [
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-
+        'Share' => Jorenvh\Share\ShareFacade::class,
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'options' => App\Option::class,
+        'Movie' => App\movie::class,
+        'Category' => App\genre::class,
+        'Setting' => App\Setting::class,
     ],
 
 ];

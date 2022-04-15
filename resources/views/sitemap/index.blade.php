@@ -8,7 +8,11 @@
     @if($type == "movie")
         @foreach ($data as $item)
             <url>
+                @if(option_get('movie_type') == "title" || option_get('movie_type') == false)
                 <loc>{{ route('movie', [ 'title' => $item['slug_title'] ]) }}</loc>
+                @else
+                <loc>{{ route('movie', [ 'title' => $item['id'] ]) }}</loc>
+                @endif
                 @if($item->updated_at != "" || $item->updated_at != null)
                 <lastmod>{{ $item->updated_at->tz('UTC')->toAtomString() }}</lastmod>
                 @else

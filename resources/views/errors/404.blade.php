@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
       // your "Imaginary javascript"
-       window.location.href = '{{route("home")}}';
+      //  window.location.href = '{{route("home")}}';
       </script>
   </head>
   <body>

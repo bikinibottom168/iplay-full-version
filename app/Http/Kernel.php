@@ -35,6 +35,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // \Silber\PageCache\Middleware\CacheResponse::class,
+            // \App\Http\Middleware\CacheResponse::class,
         ],
 
         'api' => [
@@ -60,5 +62,8 @@ class Kernel extends HttpKernel
         'admin'=> \App\Http\Middleware\Admin::class,
         'application'=> \App\Http\Middleware\Application::class,
         'install' => \App\Http\Middleware\Install::class,
+        'recaptcha' => \App\Http\Middleware\ConfigRecaptcha::class,
+        // 'page-cache' => \Silber\PageCache\Middleware\CacheResponse::class,
+        // 'page-cache' => \App\Http\Middleware\CacheResponse::class,
     ];
 }

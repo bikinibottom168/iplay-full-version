@@ -41,7 +41,11 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard/movie';
-    protected $redirectToApplication = '/application';
+
+    protected $maxAttempts = 5;
+    protected $decayMinutes = 2;
+
+    // protected $redirectToApplication = '/application';
 
     /**
      * Create a new controller instance.

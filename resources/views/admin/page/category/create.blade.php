@@ -36,6 +36,12 @@
                                             <input type="text" name="title_category_eng" placeholder="ชื่อเรื่อง" class="form-control form-control-line">
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6 col-sm-3">
+                                            <label>คำอธิบายหมวดหมู่</label>
+                                            <textarea type="text" name="description" placeholder="description" class="form-control form-control-line"></textarea>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12">

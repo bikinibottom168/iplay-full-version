@@ -10,6 +10,7 @@
 @endif
 
 {{-- มีโฆษณา --}}
+<div id="player_container"></div>
 @if($ads_movie_video_count > 0) 
     @foreach($ads_movie_video as $key => $playlist)
         @if($playlist->status_ads)
@@ -640,7 +641,7 @@
 
         <div class="row">
             <div class="col-lg-20 col-20">
-                <div class="card">
+                <div class="card" style="background: {{ option_get('primary_color') }}">
                     <div class="card-header">
                             Episode ของ {{ $movie->title }}
                     </div>
@@ -656,15 +657,15 @@
                                     }
                                 @endphp
                                     @if($first == true)
-                                        <div class="col-lg-5 col-md-10 col-10 mb-2">
-                                            <div class="episode_path btn {{ env('SCRIPT_BUTTON_COLOR') }} btn-block"  data-ep-name="{{ $movie->title }}" data-href="{{ $source }}">
+                                        <div class="col-lg-10 col-md-10 col-10 mb-2">
+                                            <div class="episode_path btn btn-light btn-block"  data-ep-name="{{ $movie->title }}" data-href="{{ $source }}">
                                                 <i class="fas fa-play"></i> {{ $key }}
                                             </div>
                                         </div>
                                         @php $first = false @endphp
                                     @else
-                                        <div class="col-lg-5 col-md-10 col-10 mb-2">
-                                            <div class="episode_path btn btn-primary btn-block"  data-ep-name="{{ $movie->title }}" data-href="{{ $source }}" >
+                                        <div class="col-lg-10 col-md-10 col-10 mb-2">
+                                            <div class="episode_path btn btn-dark btn-block"  data-ep-name="{{ $movie->title }}" data-href="{{ $source }}" >
                                                 <i class="fas fa-play"></i> {{ $key }}
                                             </div>
                                         </div>
@@ -688,14 +689,14 @@
 
                 @endphp
                 @if($i == 0)
-                    <div class="col-lg-5 col-md-10 col-10 mb-2">
-                        <div class="episode_path btn {{ env('SCRIPT_BUTTON_COLOR') }} btn-block"  data-ep-name="{{ $movie->title }} - {{ $filename[1][$i] }}" data-href="{{ $source }}">
-                            <i class="fas fa-play"></i> {{ $filename[1][$i] }}
+                    <div class="col-lg-10 col-md-10 col-20 mb-2">
+                        <div class="episode_path btn btn-light btn-block"  data-ep-name="{{ $movie->title }} - {{ $filename[1][$i] }}" data-href="{{ $source }}">
+                            <i class="fas fa-play"></i> {{{ $filename[1][$i] }}}
                         </div>
                     </div>
                 @else
-                    <div class="col-lg-5 col-md-10 col-10 mb-2">
-                        <div class="episode_path btn btn-primary btn-block" data-ep-name="{{ $movie->title }} - {{ $filename[1][$i] }}" data-href="{{ $source }}" >
+                    <div class="col-lg-10 col-md-10 col-20 mb-2">
+                        <div class="episode_path btn btn-dark btn-block" data-ep-name="{{ $movie->title }} - {{ $filename[1][$i] }}" data-href="{{ $source }}" >
                             <i class="fas fa-play"></i> {{ $filename[1][$i] }}
                         </div>
                     </div>
@@ -741,17 +742,24 @@
             jQuery(".resolution_path").hide();
             jQuery("#"+resolution).show();
 
+
+            
+            // document.getElementByClass("player_container").scrollIntoView();
+
         });
 
         jQuery(".episode_path").click(function(){
             var ep = jQuery(this).attr('data-href'); // ค้นหา url ไฟล์
             var name = jQuery(this).attr('data-ep-name');
             jQuery("#player_iframe").attr('src', ep); // เปลี่ยน ep ให้ iframe
-            jQuery(".episode_path").removeClass('btn-primary');
+            jQuery(".episode_path").removeClass('btn-light');
             jQuery(".episode_path").removeClass('{{ env('SCRIPT_BUTTON_COLOR') }}');
-            jQuery(".episode_path").addClass('btn-primary');
-            jQuery(this).removeClass('btn-primary');
-            jQuery(this).addClass('{{ env('SCRIPT_BUTTON_COLOR') }}');
+            jQuery(".episode_path").addClass('btn-dark');
+            jQuery(this).removeClass('btn-dark');
+            jQuery(this).addClass('btn-light');
+
+            document.getElementById("player_container").scrollIntoView();
+            
             // jQuery(".episode_path").css({ 'background-color': '#5b5b5b' });
             // jQuery(this).css({ 'background-color': '#127ba3' });
         });
@@ -760,8 +768,8 @@
             var ep = jQuery(this).attr('data-href'); // ดึง URL
             jQuery("#player_iframe").attr('src', ep); // เปลี่ยน ep ให้ iframe
 
-            jQuery(".resolution").removeClass('bg-warning') // ลบ Active Button
-            jQuery(this).addClass('bg-warning') // ลบ Active Button
+            jQuery(".resolution").removeClass('bg-dark') // ลบ Active Button
+            jQuery(this).addClass('bg-light') // ลบ Active Button
             // jQuery(this).removeClass('btn-default').addClass('btn-danger'); // ลบ Active Button
         });
 

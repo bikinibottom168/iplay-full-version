@@ -34,12 +34,3 @@
         </tbody>
     </table>
 </div>
-
-<style>
-    .detail-resolution {
-        background-color: #ffc107;
-        padding: 6px;
-        color: #fff;
-        font-size: 0.75rem;
-    }
-</style>

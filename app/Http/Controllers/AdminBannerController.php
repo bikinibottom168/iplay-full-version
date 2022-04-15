@@ -11,6 +11,11 @@ use Auth;
 class AdminBannerController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function Main()
     {
         $data['infosetting'] = Setting::first();

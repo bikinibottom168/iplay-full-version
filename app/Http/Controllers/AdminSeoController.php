@@ -17,20 +17,28 @@ class AdminSeoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+    
      public function Main()
      {
          $data['infosetting'] = Setting::first();
          return $data;
      }
 
-    public function index()
+    public function index(Request $req)
     {
         if(!Auth::check())
         {
             return redirect()->route('admin.login');
         }
         $data = $this->Main();
-        $data['header_title'] = "ตั้งค่าเว็บ";
+        $data['header_title'] = "SEO ".strtoupper($req->type);
+        
         $data['request'] = Setting::find(1);
         $data['seo'] = Seo::first();
         return view('admin.page.seo.seo', $data);
