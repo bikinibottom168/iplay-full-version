@@ -19,6 +19,7 @@ class CreateAboutsTable extends Migration {
 			$table->text('description', 65535)->nullable();
 			$table->text('type', 65535)->nullable();
 			$table->timestamps();
+			$table->integer('rel')->default(0);
 		});
 	}
 

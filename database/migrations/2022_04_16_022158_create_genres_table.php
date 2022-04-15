@@ -22,6 +22,7 @@ class CreateGenresTable extends Migration {
 			$table->string('type_source', 100)->nullable();
 			$table->string('split', 100)->default('0');
 			$table->timestamps();
+			$table->text('description', 65535)->nullable();
 		});
 	}
 
